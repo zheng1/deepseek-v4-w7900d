@@ -353,7 +353,7 @@ const page = `<!doctype html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>我让 Codex 自己折腾了 12 小时，最后在 8 张 W7900D 上跑起了 DeepSeek-V4-Flash</title>
+  <title>把 DeepSeek-V4-Flash 跑上 8 张 W7900D：一次让 Codex 接管机器的实验</title>
   <style>
     :root {
       color-scheme: light;
@@ -620,8 +620,8 @@ const page = `<!doctype html>
       <div class="hero-inner">
         <div>
           <p class="eyebrow">Agent-assisted engineering / ROCm / DeepSeek-V4-Flash</p>
-          <h1>我让 Codex 自己折腾了 12 小时，最后在 8 张 W7900D 上跑起了 DeepSeek-V4-Flash</h1>
-          <p class="subtitle">从 vLLM、SGLang、Ollama 一路试错，到 bati.cpp ROCm、MXFP4_MOE 和标准 benchmark。这里记录的是一次真实机器上的完整工程闭环。</p>
+          <h1>把 DeepSeek-V4-Flash 跑上 8 张 W7900D：一次让 Codex 接管机器的实验</h1>
+          <p class="subtitle">从 vLLM、SGLang、Ollama 一路排除，到 bati.cpp ROCm、MXFP4_MOE 和标准 benchmark。这里记录的是一次真实机器上的工程复盘。</p>
         </div>
         <aside class="rack" aria-label="hardware summary">
           <div class="rack-title"><strong>8 x W7900D</strong><span>48GB / GPU</span></div>
