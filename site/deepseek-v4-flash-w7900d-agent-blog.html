@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>我让 Codex 自己折腾了 12 小时，最后在 8 张 W7900D 上跑起了 DeepSeek-V4-Flash</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f5ef;
+      --paper: #fffefa;
+      --ink: #202124;
+      --muted: #62665f;
+      --line: #d9d5c8;
+      --code: #15191c;
+      --code-ink: #e8eee9;
+      --teal: #0d6f68;
+      --rust: #ad4f2f;
+      --gold: #b1841f;
+      --blue: #284e7a;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font: 16px/1.72 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    a { color: var(--teal); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    .page-shell { min-height: 100vh; }
+    .hero {
+      border-bottom: 1px solid var(--line);
+      background: #f0efe7;
+    }
+    .hero-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 44px 24px 28px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 340px;
+      gap: 36px;
+      align-items: end;
+    }
+    .eyebrow {
+      margin: 0 0 14px;
+      color: var(--rust);
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      margin: 0;
+      max-width: 820px;
+      font-size: clamp(34px, 5vw, 64px);
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+    .subtitle {
+      max-width: 820px;
+      margin: 20px 0 0;
+      color: var(--muted);
+      font-size: 18px;
+    }
+    .rack {
+      border: 1px solid var(--line);
+      background: var(--paper);
+      border-radius: 8px;
+      padding: 14px;
+      box-shadow: 0 10px 28px rgba(32, 33, 36, 0.06);
+    }
+    .rack-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .gpu-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    .gpu {
+      min-height: 54px;
+      border: 1px solid #c9c4b4;
+      border-left: 5px solid var(--teal);
+      border-radius: 6px;
+      padding: 8px;
+      background: #fbfaf3;
+      font-size: 12px;
+      line-height: 1.25;
+    }
+    .gpu strong { display: block; font-size: 14px; color: var(--ink); }
+    .stats {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 18px 24px 30px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .stat {
+      border: 1px solid var(--line);
+      background: var(--paper);
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+    .stat span { display: block; color: var(--muted); font-size: 13px; }
+    .stat strong { display: block; margin-top: 4px; font-size: 20px; }
+    .layout {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 34px 24px 64px;
+      display: grid;
+      grid-template-columns: 250px minmax(0, 1fr);
+      gap: 36px;
+      align-items: start;
+    }
+    nav {
+      position: sticky;
+      top: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      background: rgba(255, 254, 250, 0.92);
+    }
+    nav h2 {
+      margin: 0 0 8px;
+      font-size: 14px;
+    }
+    nav a {
+      display: block;
+      padding: 7px 0;
+      color: var(--muted);
+      text-decoration: none;
+      border-top: 1px solid #ebe7db;
+      font-size: 14px;
+      line-height: 1.35;
+    }
+    nav a:hover { color: var(--teal); }
+    article {
+      min-width: 0;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 34px min(5vw, 58px);
+      box-shadow: 0 14px 34px rgba(32, 33, 36, 0.06);
+    }
+    article h1 { display: none; }
+    article h2 {
+      margin: 44px 0 14px;
+      padding-top: 8px;
+      font-size: 30px;
+      line-height: 1.2;
+      letter-spacing: 0;
+      border-top: 1px solid var(--line);
+    }
+    article h2:first-of-type {
+      margin-top: 0;
+      border-top: 0;
+    }
+    article h3 {
+      margin: 26px 0 10px;
+      font-size: 20px;
+      line-height: 1.3;
+      letter-spacing: 0;
+    }
+    p { margin: 14px 0; }
+    blockquote {
+      margin: 18px 0 24px;
+      padding: 12px 18px;
+      border-left: 4px solid var(--gold);
+      background: #f7f1df;
+      border-radius: 0 8px 8px 0;
+      color: #4e4b42;
+    }
+    code {
+      background: #eeeadf;
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-size: 0.92em;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+    pre {
+      margin: 18px 0;
+      padding: 16px;
+      overflow: auto;
+      background: var(--code);
+      color: var(--code-ink);
+      border-radius: 8px;
+      border: 1px solid #0b0e11;
+      line-height: 1.5;
+    }
+    pre code {
+      padding: 0;
+      background: transparent;
+      color: inherit;
+      border-radius: 0;
+      font-size: 13px;
+    }
+    ul, ol { padding-left: 23px; }
+    li { margin: 6px 0; }
+    .table-wrap {
+      margin: 18px 0 24px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fffdf7;
+      min-width: 620px;
+    }
+    th, td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #e6e1d4;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #ebe6d9;
+      color: #33342f;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+    td:nth-child(n+2), th:nth-child(n+2) { white-space: nowrap; }
+    tr:last-child td { border-bottom: 0; }
+    .image-figure {
+      margin: 24px 0 30px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fffdf7;
+    }
+    .image-figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 6px;
+    }
+    .image-figure figcaption {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    @media (max-width: 920px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .layout { grid-template-columns: 1fr; }
+      nav { position: static; }
+    }
+    @media (max-width: 560px) {
+      .hero-inner { padding: 30px 16px 22px; }
+      .stats { grid-template-columns: 1fr; padding: 14px 16px 24px; }
+      .layout { padding: 24px 14px 44px; }
+      article { padding: 24px 16px; }
+      article h2 { font-size: 24px; }
+      .gpu-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero">
+      <div class="hero-inner">
+        <div>
+          <p class="eyebrow">Agent-assisted engineering / ROCm / DeepSeek-V4-Flash</p>
+          <h1>我让 Codex 自己折腾了 12 小时，最后在 8 张 W7900D 上跑起了 DeepSeek-V4-Flash</h1>
+          <p class="subtitle">从 vLLM、SGLang、Ollama 一路试错，到 bati.cpp ROCm、MXFP4_MOE 和标准 benchmark。这里记录的是一次真实机器上的完整工程闭环。</p>
+        </div>
+        <aside class="rack" aria-label="hardware summary">
+          <div class="rack-title"><strong>8 x W7900D</strong><span>48GB / GPU</span></div>
+          <div class="gpu-grid">
+            <div class="gpu"><strong>GPU 0</strong>gfx1100<br>48GB</div><div class="gpu"><strong>GPU 1</strong>gfx1100<br>48GB</div><div class="gpu"><strong>GPU 2</strong>gfx1100<br>48GB</div><div class="gpu"><strong>GPU 3</strong>gfx1100<br>48GB</div><div class="gpu"><strong>GPU 4</strong>gfx1100<br>48GB</div><div class="gpu"><strong>GPU 5</strong>gfx1100<br>48GB</div><div class="gpu"><strong>GPU 6</strong>gfx1100<br>48GB</div><div class="gpu"><strong>GPU 7</strong>gfx1100<br>48GB</div>
+          </div>
+        </aside>
+      </div>
+      <div class="stats">
+        <div class="stat"><span>当前路线</span><strong>MXFP4_MOE</strong></div>
+        <div class="stat"><span>Prefill p512</span><strong>118 tok/s</strong></div>
+        <div class="stat"><span>Decode n64</span><strong>9.5 tok/s</strong></div>
+        <div class="stat"><span>Serving 128/64</span><strong>6.9 tok/s</strong></div>
+      </div>
+    </header>
+    <main class="layout">
+      <nav>
+        <h2>目录</h2>
+        <a href="#最后的结果">最后的结果</a>
+<a href="#我没有一开始就知道该怎么跑">我没有一开始就知道该怎么跑</a>
+<a href="#先把不合适的路排掉">先把不合适的路排掉</a>
+<a href="#为什么是-layer-split">为什么是 layer split</a>
+<a href="#benchmark-不能只测一个请求">Benchmark 不能只测一个请求</a>
+<a href="#数字">数字</a>
+<a href="#为什么-mxfp4-moe-反而更好">为什么 MXFP4_MOE 反而更好</a>
+<a href="#长上下文-能开-不代表该一上来开">长上下文：能开，不代表该一上来开</a>
+<a href="#让-agent-真的用上这个模型">让 agent 真的用上这个模型</a>
+<a href="#顺手给上游提了两个-pr">顺手给上游提了两个 PR</a>
+<a href="#这次实验给我的经验">这次实验给我的经验</a>
+<a href="#如果现在重来一遍">如果现在重来一遍</a>
+<a href="#结尾">结尾</a>
+      </nav>
+      <article>
+        <h1 id="把-deepseek-v4-flash-跑上-8-张-w7900d-一次让-codex-接管机器的实验">把 DeepSeek-V4-Flash 跑上 8 张 W7900D：一次让 Codex 接管机器的实验</h1>
+<blockquote><p>机器：8 x AMD Radeon PRO W7900D 48GB  </p><p>显存：384GB  </p><p>最终路线：bati.cpp / llama.cpp ROCm + GGUF + layer split  </p><p>当前推荐模型：DeepSeek-V4-Flash MXFP4_MOE  </p><p>服务接口：OpenAI-compatible <code>/v1/completions</code></p></blockquote>
+<p>我最近拿到一台比较少见的机器：8 张 AMD Radeon PRO W7900D，每张 48GB，合计 384GB 显存。</p>
+<p>这机器看起来很适合本地大模型。问题是，显存够不等于事情简单。</p>
+<p>如果是 8 张 MI300X，可以先照着 vLLM 的 AMD recipe 往下走。如果是 CUDA，也大概率有更多现成答案。但 W7900D 是 RDNA3 工作站卡，ROCm 支持是有的，生态又没有 datacenter 卡那么顺。你很快会遇到一堆看似普通、实际很花时间的问题：</p>
+<ul><li>vLLM 对 DeepSeek V4 的 ROCm 支持到哪一步了？</li><li>SGLang 能不能直接用？</li><li>Ollama 页面上有模型，实际是不是能跑？</li><li>llama.cpp 主线、分支、社区 fork 到底差在哪？</li><li>8 张 PCIe 卡应该 layer split 还是 tensor split？</li><li>Q2、Q3、Q4、Q8、MXFP4 哪个才是真正适合这台机器的点？</li></ul>
+<p>这些问题单独看都不难，合在一起就很烦。烦的地方不是命令多，而是每条路都像是“差一点就行”，然后你半夜三点发现它差的那一点叫 ROCm kernel、KV cache、GGUF layout 或者上下文分片。</p>
+<p>所以我干了一件很偷懒的事：我把机器交给 Codex，让它自己试。</p>
+<h2 id="最后的结果">最后的结果</h2>
+<p>先说结论。</p>
+<p>这台机器可以跑 DeepSeek-V4-Flash。当前我会把推荐路线定成：</p>
+<pre><code class="language-text">DeepSeek-V4-Flash
+  -&gt; GGUF
+  -&gt; bati.cpp / llama.cpp ROCm-HIP
+  -&gt; layer split
+  -&gt; llama-server OpenAI-compatible API</code></pre>
+<p>最终更推荐的模型文件是：</p>
+<pre><code class="language-text">DeepSeek-V4-Flash-MXFP4_MOE-requant-from-Q8_0.gguf</code></pre>
+<p>启动脚本是：</p>
+<pre><code class="language-bash">/root/deepseek-v4-w7900d/scripts/run_server_mxfp4_moe.sh</code></pre>
+<p>服务起来后就是普通的 OpenAI-compatible endpoint：</p>
+<pre><code class="language-bash">curl --noproxy '*' http://127.0.0.1:8080/health</code></pre>
+<p>返回：</p>
+<pre><code class="language-json">{&quot;status&quot;:&quot;ok&quot;}</code></pre>
+<p>它不是全世界最快的 DeepSeek V4 部署，也不是最漂亮的官方路线。但它是这台 8 卡 W7900D 上当前最实用的路线：能跑，能压测，能接 agent，出了问题还能改。</p>
+<h2 id="我没有一开始就知道该怎么跑">我没有一开始就知道该怎么跑</h2>
+<p>最开始我给 Codex 的指令很粗暴：我要睡觉了，你先研究。一条路不通就搜索，再换路，直到跑起来。</p>
+<p>这类任务很适合暴露 agent 的边界。</p>
+<p>Codex 在本机执行上很强。它能查显卡、装依赖、编译、跑 server、读日志、改 C++，还会在 benchmark 结果不合理的时候继续追。</p>
+<p>但 Codex 的外部检索不是一直可靠。DeepSeek V4 这种刚出来、生态还在变化的模型，信息散在 ModelScope、Hugging Face、GitHub issue、ROCm 文档、fork 分支里。只靠它自己搜，容易漏掉关键线索。</p>
+<p>于是我又接了 Hermes，让它连 GPT-5.5 做外部调研。Hermes 给出的判断更像一个架构师：W7900D 不是 Instinct，vLLM 官方 Pro recipe 偏 MI300X/MI325X，DeepSeek V4 的 ROCm quantization 支持还在补，社区 GGUF + llama.cpp layer split 反而更适合 PCIe 工作站。</p>
+<p>这时候分工就清楚了：</p>
+<div class="table-wrap"><table><thead><tr><th>Agent</th><th>适合做什么</th><th>实际作用</th></tr></thead><tbody><tr><td>Hermes / GPT-5.5</td><td>外部资料梳理、路线判断</td><td>把方向从 vLLM/Pro 拉回 V4-Flash + GGUF</td></tr><tr><td>Codex</td><td>本机执行、编译、改代码、压测</td><td>真正把服务跑起来，把 benchmark 跑完</td></tr><tr><td>Pi</td><td>验证本地模型能不能接 agent 工作流</td><td>通过 OpenAI tools 调本地模型，反过来审稿</td></tr></tbody></table></div>
+<p>这个组合很像一个很小的工程团队。一个人查资料，一个人上机器，一个人模拟下游用户。区别是它们都不是人。</p>
+<h2 id="先把不合适的路排掉">先把不合适的路排掉</h2>
+<p>第一批尝试不是最优解，而是排除法。</p>
+<p>vLLM 是最自然的第一反应，因为它有标准 benchmark，也容易和别的厂商结果对比。但 DeepSeek V4 在 ROCm 上的支持当时还不够省心，尤其是这台机器不是 MI300X 这种官方 recipe 里反复出现的硬件。V4-Pro 的官方形态也明显不是给 8 x 48GB W7900D 准备的。</p>
+<p>SGLang 也试了，但路线没有比 vLLM 更稳。</p>
+<p>Ollama 页面上有 DeepSeek-V4-Flash，看起来很诱人。实际问题是，Ollama 对这种超大模型、多卡、ROCm、特殊量化和长上下文的组合不够透明。它适合“我就想本地拉个模型试试”，不适合这次这种要写 benchmark、要解释性能、要能持续调优的场景。</p>
+<p>ds4 是另一个有意思的项目。它是 antirez 写的 DeepSeek V4 Flash 专用引擎，思路很激进，尤其是针对 Mac / Metal 做了很多专门优化。但这台机器是 AMD ROCm，不是 Apple Metal。最后我给 ds4 做了一个 Linux CPU build/runtime 边界修复 PR，让它在 Linux 上能编译、inspect、tokenize，并且把非 Metal server 的失败方式说清楚。但它不是这台 AMD 机器的生产路线。</p>
+<p>真正跑起来的是 bati.cpp / llama.cpp ROCm 这条线。</p>
+<h2 id="为什么是-layer-split">为什么是 layer split</h2>
+<p>8 张 W7900D 的总显存很大，384GB。但多卡不只看总显存，还要看互联。</p>
+<p>这不是 NVLink 机器，也不是 MI300X 那种专门为大模型推理准备的系统。W7900D 是 PCIe 工作站卡。tensor split 会更依赖卡间通信，理论上能降低部分延迟，但在这台机器上更容易把互联和 kernel 支持的问题放大。</p>
+<p>layer split 更朴素：把模型层切到不同 GPU 上，按层往前跑。它不一定优雅，但对 PCIe 多卡更友好，也更容易稳定。</p>
+<p>最后服务参数大致是这个方向：</p>
+<pre><code class="language-bash">HIP_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
+ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
+GGML_HIP_NO_VMM=1 \
+./build-hip/bin/llama-server \
+  -m /data/models/deepseek-v4-gguf/DeepSeek-V4-Flash-MXFP4_MOE-requant-from-Q8_0.gguf \
+  -sm layer \
+  -ngl 99 \
+  -c 16384 \
+  -b 512 \
+  -ub 256 \
+  -fa on \
+  --host 0.0.0.0 \
+  --port 8080</code></pre>
+<p>这里有几个参数后来反复影响结果：</p>
+<ul><li><code>-sm layer</code>：多卡 layer split。</li><li><code>-c</code>：上下文长度，先从 16K 稳住，再测 64K、128K、1M。</li><li><code>-b</code> / <code>-ub</code>：batch 和 micro-batch，太激进会不稳，太保守吞吐上不去。</li><li><code>-np</code>：server slot 数，并发压测必须看这个。</li><li><code>GGML_HIP_NO_VMM=1</code>：consumer/workstation ROCm 场景下更现实。</li></ul>
+<h2 id="benchmark-不能只测一个请求">Benchmark 不能只测一个请求</h2>
+<p>最开始我做 prefill 测试时，用过很小的请求数。这个结果看起来不差，但没有把机器压满。</p>
+<p>后来重新按更接近标准 benchmark 的方式测：</p>
+<pre><code class="language-text">input = 1024
+output = 1
+num_prompts = 100
+concurrency = 32</code></pre>
+<p>这个设置更像在测 prefill 吞吐。<code>output=1</code> 基本把 decode 影响压到最低，<code>concurrency=32</code> 则能看出服务端排队、slot、batch 和 KV cache 的真实情况。</p>
+<p>这时一个很实际的问题出现了：多 slot 会触发 DeepSeek V4 的 KV cache 路径问题。单请求能跑，不代表并发能跑。于是我又去改 bati.cpp，让 DeepSeek V4 多 slot 走 unified KV，最后提交了 PR：</p>
+<pre><code class="language-text">https://github.com/batiai/bati.cpp/pull/1</code></pre>
+<p>这个 PR 不是什么华丽优化，但很关键。没有它，多并发 benchmark 很容易变成“先崩了再说”。</p>
+<h2 id="数字">数字</h2>
+<p>先看 llama-bench。统一参数是 layer split、batch 512、ubatch 256、f16 KV cache。</p>
+<figure class="image-figure"><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAwIiBoZWlnaHQ9Ijg2OCIgdmlld0JveD0iMCAwIDEyMDAgODY4IiByb2xlPSJpbWciIGFyaWEtbGFiZWw9ImxsYW1hLWJlbmNo77yacHJlZmlsbCDlkowgZGVjb2RlIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZmZmZGY3Ii8+CiAgPHRleHQgeD0iNjAiIHk9IjU4IiBmb250LXNpemU9IjM0IiBmb250LXdlaWdodD0iODUwIiBmaWxsPSIjMjAyMTI0Ij5sbGFtYS1iZW5jaO+8mnByZWZpbGwg5ZKMIGRlY29kZTwvdGV4dD4KICA8dGV4dCB4PSI2MCIgeT0iODgiIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiM2MjY2NWYiPue7n+S4gOWPguaVsO+8mmxheWVyIHNwbGl0IC8gYmF0Y2ggNTEyIC8gdWJhdGNoIDI1NiAvIGYxNiBLViBjYWNoZTwvdGV4dD4KICAKICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAsMCkiPgogICAgICA8cmVjdCB4PSI0NiIgeT0iMTIwIiB3aWR0aD0iMTEwOCIgaGVpZ2h0PSIzMjgiIHJ4PSIxMiIgZmlsbD0iI2ZmZmVmYSIgc3Ryb2tlPSIjZDlkNWM4Ii8+CiAgICAgIDx0ZXh0IHg9IjcwIiB5PSIxNTQiIGZvbnQtc2l6ZT0iMjUiIGZvbnQtd2VpZ2h0PSI4MDAiIGZpbGw9IiMyMDIxMjQiPlByZWZpbGwgcDUxMjwvdGV4dD4KICAgICAgPHRleHQgeD0iNzAiIHk9IjE4MiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzYyNjY1ZiI+5LiA5qyh5ZCDIDUxMiB0b2tlbiBwcm9tcHTvvIzotorpq5jotorlpb08L3RleHQ+CiAgICAgIDxsaW5lIHgxPSI0NDMuNSIgeTE9IjE5NiIgeDI9IjQ0My41IiB5Mj0iNDE2IiBzdHJva2U9IiNlYmU2ZDkiIHN0cm9rZS13aWR0aD0iMSIvPjxsaW5lIHgxPSI2MzEiIHkxPSIxOTYiIHgyPSI2MzEiIHkyPSI0MTYiIHN0cm9rZT0iI2ViZTZkOSIgc3Ryb2tlLXdpZHRoPSIxIi8+PGxpbmUgeDE9IjgxOC41IiB5MT0iMTk2IiB4Mj0iODE4LjUiIHkyPSI0MTYiIHN0cm9rZT0iI2ViZTZkOSIgc3Ryb2tlLXdpZHRoPSIxIi8+PGxpbmUgeDE9IjEwMDYiIHkxPSIxOTYiIHgyPSIxMDA2IiB5Mj0iNDE2IiBzdHJva2U9IiNlYmU2ZDkiIHN0cm9rZS13aWR0aD0iMSIvPgogICAgICAKICAgICAgPGc+CiAgICAgICAgPGNpcmNsZSBjeD0iNzgiIGN5PSIyMjAiIHI9IjUiIGZpbGw9IiMwZDZmNjgiLz4KICAgICAgICA8dGV4dCB4PSI5MCIgeT0iMjI1IiBmb250LXNpemU9IjE3IiBmaWxsPSIjMjAyMTI0Ij5NWEZQNF9NT0U8L3RleHQ+CiAgICAgICAgPHJlY3QgeD0iMjU2IiB5PSIyMDYiIHdpZHRoPSI3NTAiIGhlaWdodD0iMjYiIHJ4PSI1IiBmaWxsPSIjZjBlY2RmIi8+CiAgICAgICAgPHJlY3QgeD0iMjU2IiB5PSIyMDYiIHdpZHRoPSI3NTAiIGhlaWdodD0iMjYiIHJ4PSI1IiBmaWxsPSIjMGQ2ZjY4Ii8+CiAgICAgICAgPHRleHQgeD0iMTAyMiIgeT0iMjI1IiBmb250LXNpemU9IjE3IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMjAyMTI0Ij4xMTguMDQgdG9rL3M8L3RleHQ+CiAgICAgIDwvZz4KICAgICAgPGc+CiAgICAgICAgPGNpcmNsZSBjeD0iNzgiIGN5PSIyNjQiIHI9IjUiIGZpbGw9IiMyODRlN2EiLz4KICAgICAgICA8dGV4dCB4PSI5MCIgeT0iMjY5IiBmb250LXNpemU9IjE3IiBmaWxsPSIjMjAyMTI0Ij5ROF8wPC90ZXh0PgogICAgICAgIDxyZWN0IHg9IjI1NiIgeT0iMjUwIiB3aWR0aD0iNzUwIiBoZWlnaHQ9IjI2IiByeD0iNSIgZmlsbD0iI2YwZWNkZiIvPgogICAgICAgIDxyZWN0IHg9IjI1NiIgeT0iMjUwIiB3aWR0aD0iNzM0Ljg3ODAwNzQ1NTA5OTkiIGhlaWdodD0iMjYiIHJ4PSI1IiBmaWxsPSIjMjg0ZTdhIi8+CiAgICAgICAgPHRleHQgeD0iMTAyMiIgeT0iMjY5IiBmb250LXNpemU9IjE3IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMjAyMTI0Ij4xMTUuNjYgdG9rL3M8L3RleHQ+CiAgICAgIDwvZz4KICAgICAgPGc+CiAgICAgICAgPGNpcmNsZSBjeD0iNzgiIGN5PSIzMDgiIHI9IjUiIGZpbGw9IiNiMTg0MWYiLz4KICAgICAgICA8dGV4dCB4PSI5MCIgeT0iMzEzIiBmb250LXNpemU9IjE3IiBmaWxsPSIjMjAyMTI0Ij5RMl9LPC90ZXh0PgogICAgICAgIDxyZWN0IHg9IjI1NiIgeT0iMjk0IiB3aWR0aD0iNzUwIiBoZWlnaHQ9IjI2IiByeD0iNSIgZmlsbD0iI2YwZWNkZiIvPgogICAgICAgIDxyZWN0IHg9IjI1NiIgeT0iMjk0IiB3aWR0aD0iNjUyLjQ2OTUwMTg2Mzc3NDkiIGhlaWdodD0iMjYiIHJ4PSI1IiBmaWxsPSIjYjE4NDFmIi8+CiAgICAgICAgPHRleHQgeD0iMTAyMiIgeT0iMzEzIiBmb250LXNpemU9IjE3IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMjAyMTI0Ij4xMDIuNjkgdG9rL3M8L3RleHQ+CiAgICAgIDwvZz4KICAgICAgPGc+CiAgICAgICAgPGNpcmNsZSBjeD0iNzgiIGN5PSIzNTIiIHI9IjUiIGZpbGw9IiM2ZjViMmUiLz4KICAgICAgICA8dGV4dCB4PSI5MCIgeT0iMzU3IiBmb250LXNpemU9IjE3IiBmaWxsPSIjMjAyMTI0Ij5RM19LX008L3RleHQ+CiAgICAgICAgPHJlY3QgeD0iMjU2IiB5PSIzMzgiIHdpZHRoPSI3NTAiIGhlaWdodD0iMjYiIHJ4PSI1IiBmaWxsPSIjZjBlY2RmIi8+CiAgICAgICAgPHJlY3QgeD0iMjU2IiB5PSIzMzgiIHdpZHRoPSI2MDQuNzUyNjI2MjI4Mzk3MiIgaGVpZ2h0PSIyNiIgcng9IjUiIGZpbGw9IiM2ZjViMmUiLz4KICAgICAgICA8dGV4dCB4PSIxMDIyIiB5PSIzNTciIGZvbnQtc2l6ZT0iMTciIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMyMDIxMjQiPjk1LjE4IHRvay9zPC90ZXh0PgogICAgICA8L2c+CiAgICAgIDxnPgogICAgICAgIDxjaXJjbGUgY3g9Ijc4IiBjeT0iMzk2IiByPSI1IiBmaWxsPSIjYWQ0ZjJmIi8+CiAgICAgICAgPHRleHQgeD0iOTAiIHk9IjQwMSIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzIwMjEyNCI+bmF0aXZlIFE0X0tfTTwvdGV4dD4KICAgICAgICA8cmVjdCB4PSIyNTYiIHk9IjM4MiIgd2lkdGg9Ijc1MCIgaGVpZ2h0PSIyNiIgcng9IjUiIGZpbGw9IiNmMGVjZGYiLz4KICAgICAgICA8cmVjdCB4PSIyNTYiIHk9IjM4MiIgd2lkdGg9IjYwMC4zNjg1MTkxNDYwNTIxIiBoZWlnaHQ9IjI2IiByeD0iNSIgZmlsbD0iI2FkNGYyZiIvPgogICAgICAgIDx0ZXh0IHg9IjEwMjIiIHk9IjQwMSIgZm9udC1zaXplPSIxNyIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzIwMjEyNCI+OTQuNDkgdG9rL3M8L3RleHQ+CiAgICAgIDwvZz4KICAgIDwvZz4KICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAsMCkiPgogICAgICA8cmVjdCB4PSI0NiIgeT0iNDc2IiB3aWR0aD0iMTEwOCIgaGVpZ2h0PSIzMjgiIHJ4PSIxMiIgZmlsbD0iI2ZmZmVmYSIgc3Ryb2tlPSIjZDlkNWM4Ii8+CiAgICAgIDx0ZXh0IHg9IjcwIiB5PSI1MTAiIGZvbnQtc2l6ZT0iMjUiIGZvbnQtd2VpZ2h0PSI4MDAiIGZpbGw9IiMyMDIxMjQiPkRlY29kZSBuNjQ8L3RleHQ+CiAgICAgIDx0ZXh0IHg9IjcwIiB5PSI1MzgiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM2MjY2NWYiPui/nue7reeUn+aIkCA2NCB0b2tlbu+8jOi2iumrmOi2iuWlvTwvdGV4dD4KICAgICAgPGxpbmUgeDE9IjQ0My41IiB5MT0iNTUyIiB4Mj0iNDQzLjUiIHkyPSI3NzIiIHN0cm9rZT0iI2ViZTZkOSIgc3Ryb2tlLXdpZHRoPSIxIi8+PGxpbmUgeDE9IjYzMSIgeTE9IjU1MiIgeDI9IjYzMSIgeTI9Ijc3MiIgc3Ryb2tlPSIjZWJlNmQ5IiBzdHJva2Utd2lkdGg9IjEiLz48bGluZSB4MT0iODE4LjUiIHkxPSI1NTIiIHgyPSI4MTguNSIgeTI9Ijc3MiIgc3Ryb2tlPSIjZWJlNmQ5IiBzdHJva2Utd2lkdGg9IjEiLz48bGluZSB4MT0iMTAwNiIgeTE9IjU1MiIgeDI9IjEwMDYiIHkyPSI3NzIiIHN0cm9rZT0iI2ViZTZkOSIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgICAgIAogICAgICA8Zz4KICAgICAgICA8Y2lyY2xlIGN4PSI3OCIgY3k9IjU3NiIgcj0iNSIgZmlsbD0iIzBkNmY2OCIvPgogICAgICAgIDx0ZXh0IHg9IjkwIiB5PSI1ODEiIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiMyMDIxMjQiPk1YRlA0X01PRTwvdGV4dD4KICAgICAgICA8cmVjdCB4PSIyNTYiIHk9IjU2MiIgd2lkdGg9Ijc1MCIgaGVpZ2h0PSIyNiIgcng9IjUiIGZpbGw9IiNmMGVjZGYiLz4KICAgICAgICA8cmVjdCB4PSIyNTYiIHk9IjU2MiIgd2lkdGg9Ijc1MCIgaGVpZ2h0PSIyNiIgcng9IjUiIGZpbGw9IiMwZDZmNjgiLz4KICAgICAgICA8dGV4dCB4PSIxMDIyIiB5PSI1ODEiIGZvbnQtc2l6ZT0iMTciIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMyMDIxMjQiPjkuNTIgdG9rL3M8L3RleHQ+CiAgICAgIDwvZz4KICAgICAgPGc+CiAgICAgICAgPGNpcmNsZSBjeD0iNzgiIGN5PSI2MjAiIHI9IjUiIGZpbGw9IiMyODRlN2EiLz4KICAgICAgICA8dGV4dCB4PSI5MCIgeT0iNjI1IiBmb250LXNpemU9IjE3IiBmaWxsPSIjMjAyMTI0Ij5ROF8wPC90ZXh0PgogICAgICAgIDxyZWN0IHg9IjI1NiIgeT0iNjA2IiB3aWR0aD0iNzUwIiBoZWlnaHQ9IjI2IiByeD0iNSIgZmlsbD0iI2YwZWNkZiIvPgogICAgICAgIDxyZWN0IHg9IjI1NiIgeT0iNjA2IiB3aWR0aD0iNzI2LjM2NTU0NjIxODQ4NzUiIGhlaWdodD0iMjYiIHJ4PSI1IiBmaWxsPSIjMjg0ZTdhIi8+CiAgICAgICAgPHRleHQgeD0iMTAyMiIgeT0iNjI1IiBmb250LXNpemU9IjE3IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMjAyMTI0Ij45LjIyIHRvay9zPC90ZXh0PgogICAgICA8L2c+CiAgICAgIDxnPgogICAgICAgIDxjaXJjbGUgY3g9Ijc4IiBjeT0iNjY0IiByPSI1IiBmaWxsPSIjYjE4NDFmIi8+CiAgICAgICAgPHRleHQgeD0iOTAiIHk9IjY2OSIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzIwMjEyNCI+UTJfSzwvdGV4dD4KICAgICAgICA8cmVjdCB4PSIyNTYiIHk9IjY1MCIgd2lkdGg9Ijc1MCIgaGVpZ2h0PSIyNiIgcng9IjUiIGZpbGw9IiNmMGVjZGYiLz4KICAgICAgICA8cmVjdCB4PSIyNTYiIHk9IjY1MCIgd2lkdGg9IjcxOC40ODczOTQ5NTc5ODMyIiBoZWlnaHQ9IjI2IiByeD0iNSIgZmlsbD0iI2IxODQxZiIvPgogICAgICAgIDx0ZXh0IHg9IjEwMjIiIHk9IjY2OSIgZm9udC1zaXplPSIxNyIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzIwMjEyNCI+OS4xMiB0b2svczwvdGV4dD4KICAgICAgPC9nPgogICAgICA8Zz4KICAgICAgICA8Y2lyY2xlIGN4PSI3OCIgY3k9IjcwOCIgcj0iNSIgZmlsbD0iIzZmNWIyZSIvPgogICAgICAgIDx0ZXh0IHg9IjkwIiB5PSI3MTMiIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiMyMDIxMjQiPlEzX0tfTTwvdGV4dD4KICAgICAgICA8cmVjdCB4PSIyNTYiIHk9IjY5NCIgd2lkdGg9Ijc1MCIgaGVpZ2h0PSIyNiIgcng9IjUiIGZpbGw9IiNmMGVjZGYiLz4KICAgICAgICA8cmVjdCB4PSIyNTYiIHk9IjY5NCIgd2lkdGg9IjcwNy40NTc5ODMxOTMyNzc0IiBoZWlnaHQ9IjI2IiByeD0iNSIgZmlsbD0iIzZmNWIyZSIvPgogICAgICAgIDx0ZXh0IHg9IjEwMjIiIHk9IjcxMyIgZm9udC1zaXplPSIxNyIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzIwMjEyNCI+OC45OCB0b2svczwvdGV4dD4KICAgICAgPC9nPgogICAgICA8Zz4KICAgICAgICA8Y2lyY2xlIGN4PSI3OCIgY3k9Ijc1MiIgcj0iNSIgZmlsbD0iI2FkNGYyZiIvPgogICAgICAgIDx0ZXh0IHg9IjkwIiB5PSI3NTciIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiMyMDIxMjQiPm5hdGl2ZSBRNF9LX008L3RleHQ+CiAgICAgICAgPHJlY3QgeD0iMjU2IiB5PSI3MzgiIHdpZHRoPSI3NTAiIGhlaWdodD0iMjYiIHJ4PSI1IiBmaWxsPSIjZjBlY2RmIi8+CiAgICAgICAgPHJlY3QgeD0iMjU2IiB5PSI3MzgiIHdpZHRoPSI2OTAuMTI2MDUwNDIwMTY4MSIgaGVpZ2h0PSIyNiIgcng9IjUiIGZpbGw9IiNhZDRmMmYiLz4KICAgICAgICA8dGV4dCB4PSIxMDIyIiB5PSI3NTciIGZvbnQtc2l6ZT0iMTciIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMyMDIxMjQiPjguNzYgdG9rL3M8L3RleHQ+CiAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+Cg==" alt="llama-bench prefill 和 decode" loading="lazy"><figcaption>llama-bench prefill 和 decode</figcaption></figure>
+<p>核心结果：</p>
+<div class="table-wrap"><table><thead><tr><th>模型</th><th>Prefill p512</th><th>Decode n64</th></tr></thead><tbody><tr><td>MXFP4_MOE</td><td>118.04 tok/s</td><td>9.52 tok/s</td></tr><tr><td>Q8_0</td><td>115.66 tok/s</td><td>9.22 tok/s</td></tr><tr><td>Q2_K</td><td>102.69 tok/s</td><td>9.12 tok/s</td></tr><tr><td>Q3_K_M</td><td>95.18 tok/s</td><td>8.98 tok/s</td></tr><tr><td>native Q4_K_M</td><td>94.49 tok/s</td><td>8.76 tok/s</td></tr></tbody></table></div>
+<p>再看 serving benchmark。这里 vLLM 只是 benchmark client，真正的后端还是 bati.cpp / llama-server。</p>
+<figure class="image-figure"><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjEwOTIiIHZpZXdCb3g9IjAgMCAxMjAwIDEwOTIiIHJvbGU9ImltZyIgYXJpYS1sYWJlbD0idkxMTSBiZW5jaG1hcmsgY2xpZW5077ya6L6T5Ye65ZCe5ZCQIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZmZmZGY3Ii8+CiAgPHRleHQgeD0iNjAiIHk9IjU4IiBmb250LXNpemU9IjM0IiBmb250LXdlaWdodD0iODUwIiBmaWxsPSIjMjAyMTI0Ij52TExNIGJlbmNobWFyayBjbGllbnTvvJrovpPlh7rlkJ7lkJA8L3RleHQ+CiAgPHRleHQgeD0iNjAiIHk9Ijg4IiBmb250LXNpemU9IjE3IiBmaWxsPSIjNjI2NjVmIj52TExNIOWPquWBmuWOi+a1i+WuouaIt+err++8jOWQjuerr+aYryBiYXRpLmNwcC9sbGFtYS1zZXJ2ZXI8L3RleHQ+CiAgCiAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwLDApIj4KICAgICAgPHJlY3QgeD0iNDYiIHk9IjEyMCIgd2lkdGg9IjExMDgiIGhlaWdodD0iMzI4IiByeD0iMTIiIGZpbGw9IiNmZmZlZmEiIHN0cm9rZT0iI2Q5ZDVjOCIvPgogICAgICA8dGV4dCB4PSI3MCIgeT0iMTU0IiBmb250LXNpemU9IjI1IiBmb250LXdlaWdodD0iODAwIiBmaWxsPSIjMjAyMTI0Ij4xMjggaW5wdXQgLyA2NCBvdXRwdXTvvIxjMTwvdGV4dD4KICAgICAgPHRleHQgeD0iNzAiIHk9IjE4MiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzYyNjY1ZiI+55+t6K+35rGC5Y2V5bm25Y+R77yM6LaK6auY6LaK5aW9PC90ZXh0PgogICAgICA8bGluZSB4MT0iNDQzLjUiIHkxPSIxOTYiIHgyPSI0NDMuNSIgeTI9IjQxNiIgc3Ryb2tlPSIjZWJlNmQ5IiBzdHJva2Utd2lkdGg9IjEiLz48bGluZSB4MT0iNjMxIiB5MT0iMTk2IiB4Mj0iNjMxIiB5Mj0iNDE2IiBzdHJva2U9IiNlYmU2ZDkiIHN0cm9rZS13aWR0aD0iMSIvPjxsaW5lIHgxPSI4MTguNSIgeTE9IjE5NiIgeDI9IjgxOC41IiB5Mj0iNDE2IiBzdHJva2U9IiNlYmU2ZDkiIHN0cm9rZS13aWR0aD0iMSIvPjxsaW5lIHgxPSIxMDA2IiB5MT0iMTk2IiB4Mj0iMTAwNiIgeTI9IjQxNiIgc3Ryb2tlPSIjZWJlNmQ5IiBzdHJva2Utd2lkdGg9IjEiLz4KICAgICAgCiAgICAgIDxnPgogICAgICAgIDxjaXJjbGUgY3g9Ijc4IiBjeT0iMjIwIiByPSI1IiBmaWxsPSIjMGQ2ZjY4Ii8+CiAgICAgICAgPHRleHQgeD0iOTAiIHk9IjIyNSIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzIwMjEyNCI+TVhGUDRfTU9FPC90ZXh0PgogICAgICAgIDxyZWN0IHg9IjI1NiIgeT0iMjA2IiB3aWR0aD0iNzUwIiBoZWlnaHQ9IjI2IiByeD0iNSIgZmlsbD0iI2YwZWNkZiIvPgogICAgICAgIDxyZWN0IHg9IjI1NiIgeT0iMjA2IiB3aWR0aD0iNzUwIiBoZWlnaHQ9IjI2IiByeD0iNSIgZmlsbD0iIzBkNmY2OCIvPgogICAgICAgIDx0ZXh0IHg9IjEwMjIiIHk9IjIyNSIgZm9udC1zaXplPSIxNyIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzIwMjEyNCI+Ni44OSB0b2svczwvdGV4dD4KICAgICAgPC9nPgogICAgICA8Zz4KICAgICAgICA8Y2lyY2xlIGN4PSI3OCIgY3k9IjI2NCIgcj0iNSIgZmlsbD0iIzI4NGU3YSIvPgogICAgICAgIDx0ZXh0IHg9IjkwIiB5PSIyNjkiIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiMyMDIxMjQiPlE4XzA8L3RleHQ+CiAgICAgICAgPHJlY3QgeD0iMjU2IiB5PSIyNTAiIHdpZHRoPSI3NTAiIGhlaWdodD0iMjYiIHJ4PSI1IiBmaWxsPSIjZjBlY2RmIi8+CiAgICAgICAgPHJlY3QgeD0iMjU2IiB5PSIyNTAiIHdpZHRoPSI3NDIuMzgwMjYxMjQ4MTg1OSIgaGVpZ2h0PSIyNiIgcng9IjUiIGZpbGw9IiMyODRlN2EiLz4KICAgICAgICA8dGV4dCB4PSIxMDIyIiB5PSIyNjkiIGZvbnQtc2l6ZT0iMTciIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMyMDIxMjQiPjYuODIgdG9rL3M8L3RleHQ+CiAgICAgIDwvZz4KICAgICAgPGc+CiAgICAgICAgPGNpcmNsZSBjeD0iNzgiIGN5PSIzMDgiIHI9IjUiIGZpbGw9IiNiMTg0MWYiLz4KICAgICAgICA8dGV4dCB4PSI5MCIgeT0iMzEzIiBmb250LXNpemU9IjE3IiBmaWxsPSIjMjAyMTI0Ij5RMl9LPC90ZXh0PgogICAgICAgIDxyZWN0IHg9IjI1NiIgeT0iMjk0IiB3aWR0aD0iNzUwIiBoZWlnaHQ9IjI2IiByeD0iNSIgZmlsbD0iI2YwZWNkZiIvPgogICAgICAgIDxyZWN0IHg9IjI1NiIgeT0iMjk0IiB3aWR0aD0iNzI2LjA1MjI0OTYzNzE1NTIiIGhlaWdodD0iMjYiIHJ4PSI1IiBmaWxsPSIjYjE4NDFmIi8+CiAgICAgICAgPHRleHQgeD0iMTAyMiIgeT0iMzEzIiBmb250LXNpemU9IjE3IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMjAyMTI0Ij42LjY3IHRvay9zPC90ZXh0PgogICAgICA8L2c+CiAgICAgIDxnPgogICAgICAgIDxjaXJjbGUgY3g9Ijc4IiBjeT0iMzUyIiByPSI1IiBmaWxsPSIjNmY1YjJlIi8+CiAgICAgICAgPHRleHQgeD0iOTAiIHk9IjM1NyIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzIwMjEyNCI+UTNfS19NPC90ZXh0PgogICAgICAgIDxyZWN0IHg9IjI1NiIgeT0iMzM4IiB3aWR0aD0iNzUwIiBoZWlnaHQ9IjI2IiByeD0iNSIgZmlsbD0iI2YwZWNkZiIvPgogICAgICAgIDxyZWN0IHg9IjI1NiIgeT0iMzM4IiB3aWR0aD0iNzA0LjI4MTU2NzQ4OTExNDciIGhlaWdodD0iMjYiIHJ4PSI1IiBmaWxsPSIjNmY1YjJlIi8+CiAgICAgICAgPHRleHQgeD0iMTAyMiIgeT0iMzU3IiBmb250LXNpemU9IjE3IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMjAyMTI0Ij42LjQ3IHRvay9zPC90ZXh0PgogICAgICA8L2c+CiAgICAgIDxnPgogICAgICAgIDxjaXJjbGUgY3g9Ijc4IiBjeT0iMzk2IiByPSI1IiBmaWxsPSIjYWQ0ZjJmIi8+CiAgICAgICAgPHRleHQgeD0iOTAiIHk9IjQwMSIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzIwMjEyNCI+bmF0aXZlIFE0X0tfTTwvdGV4dD4KICAgICAgICA8cmVjdCB4PSIyNTYiIHk9IjM4MiIgd2lkdGg9Ijc1MCIgaGVpZ2h0PSIyNiIgcng9IjUiIGZpbGw9IiNmMGVjZGYiLz4KICAgICAgICA8cmVjdCB4PSIyNTYiIHk9IjM4MiIgd2lkdGg9IjY5Mi4zMDc2OTIzMDc2OTI0IiBoZWlnaHQ9IjI2IiByeD0iNSIgZmlsbD0iI2FkNGYyZiIvPgogICAgICAgIDx0ZXh0IHg9IjEwMjIiIHk9IjQwMSIgZm9udC1zaXplPSIxNyIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzIwMjEyNCI+Ni4zNiB0b2svczwvdGV4dD4KICAgICAgPC9nPgogICAgPC9nPgogICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSI+CiAgICAgIDxyZWN0IHg9IjQ2IiB5PSI0NzYiIHdpZHRoPSIxMTA4IiBoZWlnaHQ9IjI4NCIgcng9IjEyIiBmaWxsPSIjZmZmZWZhIiBzdHJva2U9IiNkOWQ1YzgiLz4KICAgICAgPHRleHQgeD0iNzAiIHk9IjUxMCIgZm9udC1zaXplPSIyNSIgZm9udC13ZWlnaHQ9IjgwMCIgZmlsbD0iIzIwMjEyNCI+MTAyNCBpbnB1dCAvIDEyOCBvdXRwdXTvvIxjMTwvdGV4dD4KICAgICAgPHRleHQgeD0iNzAiIHk9IjUzOCIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzYyNjY1ZiI+5Lit562JIHByb21wdCDljZXlubblj5HvvIzotorpq5jotorlpb08L3RleHQ+CiAgICAgIDxsaW5lIHgxPSI0NDMuNSIgeTE9IjU1MiIgeDI9IjQ0My41IiB5Mj0iNzI4IiBzdHJva2U9IiNlYmU2ZDkiIHN0cm9rZS13aWR0aD0iMSIvPjxsaW5lIHgxPSI2MzEiIHkxPSI1NTIiIHgyPSI2MzEiIHkyPSI3MjgiIHN0cm9rZT0iI2ViZTZkOSIgc3Ryb2tlLXdpZHRoPSIxIi8+PGxpbmUgeDE9IjgxOC41IiB5MT0iNTUyIiB4Mj0iODE4LjUiIHkyPSI3MjgiIHN0cm9rZT0iI2ViZTZkOSIgc3Ryb2tlLXdpZHRoPSIxIi8+PGxpbmUgeDE9IjEwMDYiIHkxPSI1NTIiIHgyPSIxMDA2IiB5Mj0iNzI4IiBzdHJva2U9IiNlYmU2ZDkiIHN0cm9rZS13aWR0aD0iMSIvPgogICAgICAKICAgICAgPGc+CiAgICAgICAgPGNpcmNsZSBjeD0iNzgiIGN5PSI1NzYiIHI9IjUiIGZpbGw9IiMwZDZmNjgiLz4KICAgICAgICA8dGV4dCB4PSI5MCIgeT0iNTgxIiBmb250LXNpemU9IjE3IiBmaWxsPSIjMjAyMTI0Ij5NWEZQNF9NT0U8L3RleHQ+CiAgICAgICAgPHJlY3QgeD0iMjU2IiB5PSI1NjIiIHdpZHRoPSI3NTAiIGhlaWdodD0iMjYiIHJ4PSI1IiBmaWxsPSIjZjBlY2RmIi8+CiAgICAgICAgPHJlY3QgeD0iMjU2IiB5PSI1NjIiIHdpZHRoPSI3NTAiIGhlaWdodD0iMjYiIHJ4PSI1IiBmaWxsPSIjMGQ2ZjY4Ii8+CiAgICAgICAgPHRleHQgeD0iMTAyMiIgeT0iNTgxIiBmb250LXNpemU9IjE3IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMjAyMTI0Ij40LjU0IHRvay9zPC90ZXh0PgogICAgICA8L2c+CiAgICAgIDxnPgogICAgICAgIDxjaXJjbGUgY3g9Ijc4IiBjeT0iNjIwIiByPSI1IiBmaWxsPSIjMjg0ZTdhIi8+CiAgICAgICAgPHRleHQgeD0iOTAiIHk9IjYyNSIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzIwMjEyNCI+UThfMDwvdGV4dD4KICAgICAgICA8cmVjdCB4PSIyNTYiIHk9IjYwNiIgd2lkdGg9Ijc1MCIgaGVpZ2h0PSIyNiIgcng9IjUiIGZpbGw9IiNmMGVjZGYiLz4KICAgICAgICA8cmVjdCB4PSIyNTYiIHk9IjYwNiIgd2lkdGg9IjczMC4xNzYyMTE0NTM3NDQ1IiBoZWlnaHQ9IjI2IiByeD0iNSIgZmlsbD0iIzI4NGU3YSIvPgogICAgICAgIDx0ZXh0IHg9IjEwMjIiIHk9IjYyNSIgZm9udC1zaXplPSIxNyIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzIwMjEyNCI+NC40MiB0b2svczwvdGV4dD4KICAgICAgPC9nPgogICAgICA8Zz4KICAgICAgICA8Y2lyY2xlIGN4PSI3OCIgY3k9IjY2NCIgcj0iNSIgZmlsbD0iIzZmNWIyZSIvPgogICAgICAgIDx0ZXh0IHg9IjkwIiB5PSI2NjkiIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiMyMDIxMjQiPlEzX0tfTTwvdGV4dD4KICAgICAgICA8cmVjdCB4PSIyNTYiIHk9IjY1MCIgd2lkdGg9Ijc1MCIgaGVpZ2h0PSIyNiIgcng9IjUiIGZpbGw9IiNmMGVjZGYiLz4KICAgICAgICA8cmVjdCB4PSIyNTYiIHk9IjY1MCIgd2lkdGg9IjY3NS42NjA3OTI5NTE1NDE5IiBoZWlnaHQ9IjI2IiByeD0iNSIgZmlsbD0iIzZmNWIyZSIvPgogICAgICAgIDx0ZXh0IHg9IjEwMjIiIHk9IjY2OSIgZm9udC1zaXplPSIxNyIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzIwMjEyNCI+NC4wOSB0b2svczwvdGV4dD4KICAgICAgPC9nPgogICAgICA8Zz4KICAgICAgICA8Y2lyY2xlIGN4PSI3OCIgY3k9IjcwOCIgcj0iNSIgZmlsbD0iI2FkNGYyZiIvPgogICAgICAgIDx0ZXh0IHg9IjkwIiB5PSI3MTMiIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiMyMDIxMjQiPm5hdGl2ZSBRNF9LX008L3RleHQ+CiAgICAgICAgPHJlY3QgeD0iMjU2IiB5PSI2OTQiIHdpZHRoPSI3NTAiIGhlaWdodD0iMjYiIHJ4PSI1IiBmaWxsPSIjZjBlY2RmIi8+CiAgICAgICAgPHJlY3QgeD0iMjU2IiB5PSI2OTQiIHdpZHRoPSI2NDUuOTI1MTEwMTMyMTU4NiIgaGVpZ2h0PSIyNiIgcng9IjUiIGZpbGw9IiNhZDRmMmYiLz4KICAgICAgICA8dGV4dCB4PSIxMDIyIiB5PSI3MTMiIGZvbnQtc2l6ZT0iMTciIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMyMDIxMjQiPjMuOTEgdG9rL3M8L3RleHQ+CiAgICAgIDwvZz4KICAgIDwvZz4KICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAsMCkiPgogICAgICA8cmVjdCB4PSI0NiIgeT0iNzg4IiB3aWR0aD0iMTEwOCIgaGVpZ2h0PSIyNDAiIHJ4PSIxMiIgZmlsbD0iI2ZmZmVmYSIgc3Ryb2tlPSIjZDlkNWM4Ii8+CiAgICAgIDx0ZXh0IHg9IjcwIiB5PSI4MjIiIGZvbnQtc2l6ZT0iMjUiIGZvbnQtd2VpZ2h0PSI4MDAiIGZpbGw9IiMyMDIxMjQiPjQwOTYgaW5wdXQgLyA2NCBvdXRwdXTvvIxjMTwvdGV4dD4KICAgICAgPHRleHQgeD0iNzAiIHk9Ijg1MCIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzYyNjY1ZiI+NEsgcHJvbXB0IOWNleW5tuWPke+8jOi2iumrmOi2iuWlvTwvdGV4dD4KICAgICAgPGxpbmUgeDE9IjQ0My41IiB5MT0iODY0IiB4Mj0iNDQzLjUiIHkyPSI5OTYiIHN0cm9rZT0iI2ViZTZkOSIgc3Ryb2tlLXdpZHRoPSIxIi8+PGxpbmUgeDE9IjYzMSIgeTE9Ijg2NCIgeDI9IjYzMSIgeTI9Ijk5NiIgc3Ryb2tlPSIjZWJlNmQ5IiBzdHJva2Utd2lkdGg9IjEiLz48bGluZSB4MT0iODE4LjUiIHkxPSI4NjQiIHgyPSI4MTguNSIgeTI9Ijk5NiIgc3Ryb2tlPSIjZWJlNmQ5IiBzdHJva2Utd2lkdGg9IjEiLz48bGluZSB4MT0iMTAwNiIgeTE9Ijg2NCIgeDI9IjEwMDYiIHkyPSI5OTYiIHN0cm9rZT0iI2ViZTZkOSIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgICAgIAogICAgICA8Zz4KICAgICAgICA8Y2lyY2xlIGN4PSI3OCIgY3k9Ijg4OCIgcj0iNSIgZmlsbD0iIzBkNmY2OCIvPgogICAgICAgIDx0ZXh0IHg9IjkwIiB5PSI4OTMiIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiMyMDIxMjQiPk1YRlA0X01PRTwvdGV4dD4KICAgICAgICA8cmVjdCB4PSIyNTYiIHk9Ijg3NCIgd2lkdGg9Ijc1MCIgaGVpZ2h0PSIyNiIgcng9IjUiIGZpbGw9IiNmMGVjZGYiLz4KICAgICAgICA8cmVjdCB4PSIyNTYiIHk9Ijg3NCIgd2lkdGg9Ijc1MCIgaGVpZ2h0PSIyNiIgcng9IjUiIGZpbGw9IiMwZDZmNjgiLz4KICAgICAgICA8dGV4dCB4PSIxMDIyIiB5PSI4OTMiIGZvbnQtc2l6ZT0iMTciIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMyMDIxMjQiPjEuMTkgdG9rL3M8L3RleHQ+CiAgICAgIDwvZz4KICAgICAgPGc+CiAgICAgICAgPGNpcmNsZSBjeD0iNzgiIGN5PSI5MzIiIHI9IjUiIGZpbGw9IiMyODRlN2EiLz4KICAgICAgICA8dGV4dCB4PSI5MCIgeT0iOTM3IiBmb250LXNpemU9IjE3IiBmaWxsPSIjMjAyMTI0Ij5ROF8wPC90ZXh0PgogICAgICAgIDxyZWN0IHg9IjI1NiIgeT0iOTE4IiB3aWR0aD0iNzUwIiBoZWlnaHQ9IjI2IiByeD0iNSIgZmlsbD0iI2YwZWNkZiIvPgogICAgICAgIDxyZWN0IHg9IjI1NiIgeT0iOTE4IiB3aWR0aD0iNzM3LjM5NDk1Nzk4MzE5MzIiIGhlaWdodD0iMjYiIHJ4PSI1IiBmaWxsPSIjMjg0ZTdhIi8+CiAgICAgICAgPHRleHQgeD0iMTAyMiIgeT0iOTM3IiBmb250LXNpemU9IjE3IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMjAyMTI0Ij4xLjE3IHRvay9zPC90ZXh0PgogICAgICA8L2c+CiAgICAgIDxnPgogICAgICAgIDxjaXJjbGUgY3g9Ijc4IiBjeT0iOTc2IiByPSI1IiBmaWxsPSIjYWQ0ZjJmIi8+CiAgICAgICAgPHRleHQgeD0iOTAiIHk9Ijk4MSIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzIwMjEyNCI+bmF0aXZlIFE0X0tfTTwvdGV4dD4KICAgICAgICA8cmVjdCB4PSIyNTYiIHk9Ijk2MiIgd2lkdGg9Ijc1MCIgaGVpZ2h0PSIyNiIgcng9IjUiIGZpbGw9IiNmMGVjZGYiLz4KICAgICAgICA8cmVjdCB4PSIyNTYiIHk9Ijk2MiIgd2lkdGg9IjYxMS4zNDQ1Mzc4MTUxMjYiIGhlaWdodD0iMjYiIHJ4PSI1IiBmaWxsPSIjYWQ0ZjJmIi8+CiAgICAgICAgPHRleHQgeD0iMTAyMiIgeT0iOTgxIiBmb250LXNpemU9IjE3IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMjAyMTI0Ij4wLjk3IHRvay9zPC90ZXh0PgogICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPgo=" alt="serving 输出吞吐" loading="lazy"><figcaption>serving 输出吞吐</figcaption></figure>
+<p>短请求下差距不大，但 MXFP4_MOE 基本都在前面：</p>
+<div class="table-wrap"><table><thead><tr><th>场景</th><th>MXFP4_MOE</th><th>Q8_0</th><th>native Q4_K_M</th></tr></thead><tbody><tr><td>128 input / 64 output</td><td>6.89 tok/s</td><td>6.82 tok/s</td><td>6.36 tok/s</td></tr><tr><td>1024 input / 128 output</td><td>4.54 tok/s</td><td>4.42 tok/s</td><td>3.91 tok/s</td></tr><tr><td>4096 input / 64 output</td><td>1.19 tok/s</td><td>1.17 tok/s</td><td>0.97 tok/s</td></tr></tbody></table></div>
+<p>TTFT 也要看。尤其是并发场景，平均 TTFT 不是单纯模型速度，还包括 slot 排队。</p>
+<figure class="image-figure"><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjEwOTIiIHZpZXdCb3g9IjAgMCAxMjAwIDEwOTIiIHJvbGU9ImltZyIgYXJpYS1sYWJlbD0idkxMTSBiZW5jaG1hcmsgY2xpZW5077yaTWVhbiBUVEZUIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZmZmZGY3Ii8+CiAgPHRleHQgeD0iNjAiIHk9IjU4IiBmb250LXNpemU9IjM0IiBmb250LXdlaWdodD0iODUwIiBmaWxsPSIjMjAyMTI0Ij52TExNIGJlbmNobWFyayBjbGllbnTvvJpNZWFuIFRURlQ8L3RleHQ+CiAgPHRleHQgeD0iNjAiIHk9Ijg4IiBmb250LXNpemU9IjE3IiBmaWxsPSIjNjI2NjVmIj7pppYgdG9rZW4g5bu26L+f77yM5Li76KaB5Y+N5pigIHByZWZpbGwg5ZKM5o6S6Zif5pe26Ze0PC90ZXh0PgogIAogICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwwKSI+CiAgICAgIDxyZWN0IHg9IjQ2IiB5PSIxMjAiIHdpZHRoPSIxMTA4IiBoZWlnaHQ9IjMyOCIgcng9IjEyIiBmaWxsPSIjZmZmZWZhIiBzdHJva2U9IiNkOWQ1YzgiLz4KICAgICAgPHRleHQgeD0iNzAiIHk9IjE1NCIgZm9udC1zaXplPSIyNSIgZm9udC13ZWlnaHQ9IjgwMCIgZmlsbD0iIzIwMjEyNCI+MTI4IGlucHV0IC8gNjQgb3V0cHV077yMYzE8L3RleHQ+CiAgICAgIDx0ZXh0IHg9IjcwIiB5PSIxODIiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM2MjY2NWYiPuefreivt+axguWNleW5tuWPke+8jOi2iuefrei2iuWlvTwvdGV4dD4KICAgICAgPGxpbmUgeDE9IjQ0My41IiB5MT0iMTk2IiB4Mj0iNDQzLjUiIHkyPSI0MTYiIHN0cm9rZT0iI2ViZTZkOSIgc3Ryb2tlLXdpZHRoPSIxIi8+PGxpbmUgeDE9IjYzMSIgeTE9IjE5NiIgeDI9IjYzMSIgeTI9IjQxNiIgc3Ryb2tlPSIjZWJlNmQ5IiBzdHJva2Utd2lkdGg9IjEiLz48bGluZSB4MT0iODE4LjUiIHkxPSIxOTYiIHgyPSI4MTguNSIgeTI9IjQxNiIgc3Ryb2tlPSIjZWJlNmQ5IiBzdHJva2Utd2lkdGg9IjEiLz48bGluZSB4MT0iMTAwNiIgeTE9IjE5NiIgeDI9IjEwMDYiIHkyPSI0MTYiIHN0cm9rZT0iI2ViZTZkOSIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgICAgIAogICAgICA8Zz4KICAgICAgICA8Y2lyY2xlIGN4PSI3OCIgY3k9IjIyMCIgcj0iNSIgZmlsbD0iIzI4NGU3YSIvPgogICAgICAgIDx0ZXh0IHg9IjkwIiB5PSIyMjUiIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiMyMDIxMjQiPlE4XzA8L3RleHQ+CiAgICAgICAgPHJlY3QgeD0iMjU2IiB5PSIyMDYiIHdpZHRoPSI3NTAiIGhlaWdodD0iMjYiIHJ4PSI1IiBmaWxsPSIjZjBlY2RmIi8+CiAgICAgICAgPHJlY3QgeD0iMjU2IiB5PSIyMDYiIHdpZHRoPSI2MDguMDA5NzA4NzM3ODY0IiBoZWlnaHQ9IjI2IiByeD0iNSIgZmlsbD0iIzI4NGU3YSIvPgogICAgICAgIDx0ZXh0IHg9IjEwMjIiIHk9IjIyNSIgZm9udC1zaXplPSIxNyIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzIwMjEyNCI+MS42N3M8L3RleHQ+CiAgICAgIDwvZz4KICAgICAgPGc+CiAgICAgICAgPGNpcmNsZSBjeD0iNzgiIGN5PSIyNjQiIHI9IjUiIGZpbGw9IiMwZDZmNjgiLz4KICAgICAgICA8dGV4dCB4PSI5MCIgeT0iMjY5IiBmb250LXNpemU9IjE3IiBmaWxsPSIjMjAyMTI0Ij5NWEZQNF9NT0U8L3RleHQ+CiAgICAgICAgPHJlY3QgeD0iMjU2IiB5PSIyNTAiIHdpZHRoPSI3NTAiIGhlaWdodD0iMjYiIHJ4PSI1IiBmaWxsPSIjZjBlY2RmIi8+CiAgICAgICAgPHJlY3QgeD0iMjU2IiB5PSIyNTAiIHdpZHRoPSI2NDQuNDE3NDc1NzI4MTU1MyIgaGVpZ2h0PSIyNiIgcng9IjUiIGZpbGw9IiMwZDZmNjgiLz4KICAgICAgICA8dGV4dCB4PSIxMDIyIiB5PSIyNjkiIGZvbnQtc2l6ZT0iMTciIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMyMDIxMjQiPjEuNzdzPC90ZXh0PgogICAgICA8L2c+CiAgICAgIDxnPgogICAgICAgIDxjaXJjbGUgY3g9Ijc4IiBjeT0iMzA4IiByPSI1IiBmaWxsPSIjNmY1YjJlIi8+CiAgICAgICAgPHRleHQgeD0iOTAiIHk9IjMxMyIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzIwMjEyNCI+UTNfS19NPC90ZXh0PgogICAgICAgIDxyZWN0IHg9IjI1NiIgeT0iMjk0IiB3aWR0aD0iNzUwIiBoZWlnaHQ9IjI2IiByeD0iNSIgZmlsbD0iI2YwZWNkZiIvPgogICAgICAgIDxyZWN0IHg9IjI1NiIgeT0iMjk0IiB3aWR0aD0iNzQyLjcxODQ0NjYwMTk0MTgiIGhlaWdodD0iMjYiIHJ4PSI1IiBmaWxsPSIjNmY1YjJlIi8+CiAgICAgICAgPHRleHQgeD0iMTAyMiIgeT0iMzEzIiBmb250LXNpemU9IjE3IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMjAyMTI0Ij4yLjA0czwvdGV4dD4KICAgICAgPC9nPgogICAgICA8Zz4KICAgICAgICA8Y2lyY2xlIGN4PSI3OCIgY3k9IjM1MiIgcj0iNSIgZmlsbD0iI2FkNGYyZiIvPgogICAgICAgIDx0ZXh0IHg9IjkwIiB5PSIzNTciIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiMyMDIxMjQiPm5hdGl2ZSBRNF9LX008L3RleHQ+CiAgICAgICAgPHJlY3QgeD0iMjU2IiB5PSIzMzgiIHdpZHRoPSI3NTAiIGhlaWdodD0iMjYiIHJ4PSI1IiBmaWxsPSIjZjBlY2RmIi8+CiAgICAgICAgPHJlY3QgeD0iMjU2IiB5PSIzMzgiIHdpZHRoPSI3NDIuNzE4NDQ2NjAxOTQxOCIgaGVpZ2h0PSIyNiIgcng9IjUiIGZpbGw9IiNhZDRmMmYiLz4KICAgICAgICA8dGV4dCB4PSIxMDIyIiB5PSIzNTciIGZvbnQtc2l6ZT0iMTciIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMyMDIxMjQiPjIuMDRzPC90ZXh0PgogICAgICA8L2c+CiAgICAgIDxnPgogICAgICAgIDxjaXJjbGUgY3g9Ijc4IiBjeT0iMzk2IiByPSI1IiBmaWxsPSIjYjE4NDFmIi8+CiAgICAgICAgPHRleHQgeD0iOTAiIHk9IjQwMSIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzIwMjEyNCI+UTJfSzwvdGV4dD4KICAgICAgICA8cmVjdCB4PSIyNTYiIHk9IjM4MiIgd2lkdGg9Ijc1MCIgaGVpZ2h0PSIyNiIgcng9IjUiIGZpbGw9IiNmMGVjZGYiLz4KICAgICAgICA8cmVjdCB4PSIyNTYiIHk9IjM4MiIgd2lkdGg9Ijc1MCIgaGVpZ2h0PSIyNiIgcng9IjUiIGZpbGw9IiNiMTg0MWYiLz4KICAgICAgICA8dGV4dCB4PSIxMDIyIiB5PSI0MDEiIGZvbnQtc2l6ZT0iMTciIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMyMDIxMjQiPjIuMDZzPC90ZXh0PgogICAgICA8L2c+CiAgICA8L2c+CiAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwLDApIj4KICAgICAgPHJlY3QgeD0iNDYiIHk9IjQ3NiIgd2lkdGg9IjExMDgiIGhlaWdodD0iMjg0IiByeD0iMTIiIGZpbGw9IiNmZmZlZmEiIHN0cm9rZT0iI2Q5ZDVjOCIvPgogICAgICA8dGV4dCB4PSI3MCIgeT0iNTEwIiBmb250LXNpemU9IjI1IiBmb250LXdlaWdodD0iODAwIiBmaWxsPSIjMjAyMTI0Ij4xMDI0IGlucHV0IC8gMTI4IG91dHB1dO+8jGMxPC90ZXh0PgogICAgICA8dGV4dCB4PSI3MCIgeT0iNTM4IiBmb250LXNpemU9IjE2IiBmaWxsPSIjNjI2NjVmIj7kuK3nrYkgcHJvbXB0IOWNleW5tuWPke+8jOi2iuefrei2iuWlvTwvdGV4dD4KICAgICAgPGxpbmUgeDE9IjQ0My41IiB5MT0iNTUyIiB4Mj0iNDQzLjUiIHkyPSI3MjgiIHN0cm9rZT0iI2ViZTZkOSIgc3Ryb2tlLXdpZHRoPSIxIi8+PGxpbmUgeDE9IjYzMSIgeTE9IjU1MiIgeDI9IjYzMSIgeTI9IjcyOCIgc3Ryb2tlPSIjZWJlNmQ5IiBzdHJva2Utd2lkdGg9IjEiLz48bGluZSB4MT0iODE4LjUiIHkxPSI1NTIiIHgyPSI4MTguNSIgeTI9IjcyOCIgc3Ryb2tlPSIjZWJlNmQ5IiBzdHJva2Utd2lkdGg9IjEiLz48bGluZSB4MT0iMTAwNiIgeTE9IjU1MiIgeDI9IjEwMDYiIHkyPSI3MjgiIHN0cm9rZT0iI2ViZTZkOSIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgICAgIAogICAgICA8Zz4KICAgICAgICA8Y2lyY2xlIGN4PSI3OCIgY3k9IjU3NiIgcj0iNSIgZmlsbD0iIzBkNmY2OCIvPgogICAgICAgIDx0ZXh0IHg9IjkwIiB5PSI1ODEiIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiMyMDIxMjQiPk1YRlA0X01PRTwvdGV4dD4KICAgICAgICA8cmVjdCB4PSIyNTYiIHk9IjU2MiIgd2lkdGg9Ijc1MCIgaGVpZ2h0PSIyNiIgcng9IjUiIGZpbGw9IiNmMGVjZGYiLz4KICAgICAgICA8cmVjdCB4PSIyNTYiIHk9IjU2MiIgd2lkdGg9IjU5OS4zMzY3MDI0NjM2NzY1IiBoZWlnaHQ9IjI2IiByeD0iNSIgZmlsbD0iIzBkNmY2OCIvPgogICAgICAgIDx0ZXh0IHg9IjEwMjIiIHk9IjU4MSIgZm9udC1zaXplPSIxNyIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzIwMjEyNCI+MTIuNjVzPC90ZXh0PgogICAgICA8L2c+CiAgICAgIDxnPgogICAgICAgIDxjaXJjbGUgY3g9Ijc4IiBjeT0iNjIwIiByPSI1IiBmaWxsPSIjMjg0ZTdhIi8+CiAgICAgICAgPHRleHQgeD0iOTAiIHk9IjYyNSIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzIwMjEyNCI+UThfMDwvdGV4dD4KICAgICAgICA8cmVjdCB4PSIyNTYiIHk9IjYwNiIgd2lkdGg9Ijc1MCIgaGVpZ2h0PSIyNiIgcng9IjUiIGZpbGw9IiNmMGVjZGYiLz4KICAgICAgICA8cmVjdCB4PSIyNTYiIHk9IjYwNiIgd2lkdGg9IjYwNy4zOTEwMjk2OTA0NjExIiBoZWlnaHQ9IjI2IiByeD0iNSIgZmlsbD0iIzI4NGU3YSIvPgogICAgICAgIDx0ZXh0IHg9IjEwMjIiIHk9IjYyNSIgZm9udC1zaXplPSIxNyIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzIwMjEyNCI+MTIuODJzPC90ZXh0PgogICAgICA8L2c+CiAgICAgIDxnPgogICAgICAgIDxjaXJjbGUgY3g9Ijc4IiBjeT0iNjY0IiByPSI1IiBmaWxsPSIjNmY1YjJlIi8+CiAgICAgICAgPHRleHQgeD0iOTAiIHk9IjY2OSIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzIwMjEyNCI+UTNfS19NPC90ZXh0PgogICAgICAgIDxyZWN0IHg9IjI1NiIgeT0iNjUwIiB3aWR0aD0iNzUwIiBoZWlnaHQ9IjI2IiByeD0iNSIgZmlsbD0iI2YwZWNkZiIvPgogICAgICAgIDxyZWN0IHg9IjI1NiIgeT0iNjUwIiB3aWR0aD0iNzE2LjM2MTMzOTIyOTMxMTQiIGhlaWdodD0iMjYiIHJ4PSI1IiBmaWxsPSIjNmY1YjJlIi8+CiAgICAgICAgPHRleHQgeD0iMTAyMiIgeT0iNjY5IiBmb250LXNpemU9IjE3IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMjAyMTI0Ij4xNS4xMnM8L3RleHQ+CiAgICAgIDwvZz4KICAgICAgPGc+CiAgICAgICAgPGNpcmNsZSBjeD0iNzgiIGN5PSI3MDgiIHI9IjUiIGZpbGw9IiNhZDRmMmYiLz4KICAgICAgICA8dGV4dCB4PSI5MCIgeT0iNzEzIiBmb250LXNpemU9IjE3IiBmaWxsPSIjMjAyMTI0Ij5uYXRpdmUgUTRfS19NPC90ZXh0PgogICAgICAgIDxyZWN0IHg9IjI1NiIgeT0iNjk0IiB3aWR0aD0iNzUwIiBoZWlnaHQ9IjI2IiByeD0iNSIgZmlsbD0iI2YwZWNkZiIvPgogICAgICAgIDxyZWN0IHg9IjI1NiIgeT0iNjk0IiB3aWR0aD0iNzUwIiBoZWlnaHQ9IjI2IiByeD0iNSIgZmlsbD0iI2FkNGYyZiIvPgogICAgICAgIDx0ZXh0IHg9IjEwMjIiIHk9IjcxMyIgZm9udC1zaXplPSIxNyIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzIwMjEyNCI+MTUuODNzPC90ZXh0PgogICAgICA8L2c+CiAgICA8L2c+CiAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwLDApIj4KICAgICAgPHJlY3QgeD0iNDYiIHk9Ijc4OCIgd2lkdGg9IjExMDgiIGhlaWdodD0iMjQwIiByeD0iMTIiIGZpbGw9IiNmZmZlZmEiIHN0cm9rZT0iI2Q5ZDVjOCIvPgogICAgICA8dGV4dCB4PSI3MCIgeT0iODIyIiBmb250LXNpemU9IjI1IiBmb250LXdlaWdodD0iODAwIiBmaWxsPSIjMjAyMTI0Ij40MDk2IGlucHV0IC8gNjQgb3V0cHV077yMYzE8L3RleHQ+CiAgICAgIDx0ZXh0IHg9IjcwIiB5PSI4NTAiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM2MjY2NWYiPjRLIHByb21wdCDljZXlubblj5HvvIzotornn63otorlpb08L3RleHQ+CiAgICAgIDxsaW5lIHgxPSI0NDMuNSIgeTE9Ijg2NCIgeDI9IjQ0My41IiB5Mj0iOTk2IiBzdHJva2U9IiNlYmU2ZDkiIHN0cm9rZS13aWR0aD0iMSIvPjxsaW5lIHgxPSI2MzEiIHkxPSI4NjQiIHgyPSI2MzEiIHkyPSI5OTYiIHN0cm9rZT0iI2ViZTZkOSIgc3Ryb2tlLXdpZHRoPSIxIi8+PGxpbmUgeDE9IjgxOC41IiB5MT0iODY0IiB4Mj0iODE4LjUiIHkyPSI5OTYiIHN0cm9rZT0iI2ViZTZkOSIgc3Ryb2tlLXdpZHRoPSIxIi8+PGxpbmUgeDE9IjEwMDYiIHkxPSI4NjQiIHgyPSIxMDA2IiB5Mj0iOTk2IiBzdHJva2U9IiNlYmU2ZDkiIHN0cm9rZS13aWR0aD0iMSIvPgogICAgICAKICAgICAgPGc+CiAgICAgICAgPGNpcmNsZSBjeD0iNzgiIGN5PSI4ODgiIHI9IjUiIGZpbGw9IiMwZDZmNjgiLz4KICAgICAgICA8dGV4dCB4PSI5MCIgeT0iODkzIiBmb250LXNpemU9IjE3IiBmaWxsPSIjMjAyMTI0Ij5NWEZQNF9NT0U8L3RleHQ+CiAgICAgICAgPHJlY3QgeD0iMjU2IiB5PSI4NzQiIHdpZHRoPSI3NTAiIGhlaWdodD0iMjYiIHJ4PSI1IiBmaWxsPSIjZjBlY2RmIi8+CiAgICAgICAgPHJlY3QgeD0iMjU2IiB5PSI4NzQiIHdpZHRoPSI1OTYuNzg4MzQ2Nzg4MzQ2OSIgaGVpZ2h0PSIyNiIgcng9IjUiIGZpbGw9IiMwZDZmNjgiLz4KICAgICAgICA8dGV4dCB4PSIxMDIyIiB5PSI4OTMiIGZvbnQtc2l6ZT0iMTciIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMyMDIxMjQiPjQ1LjM0czwvdGV4dD4KICAgICAgPC9nPgogICAgICA8Zz4KICAgICAgICA8Y2lyY2xlIGN4PSI3OCIgY3k9IjkzMiIgcj0iNSIgZmlsbD0iIzI4NGU3YSIvPgogICAgICAgIDx0ZXh0IHg9IjkwIiB5PSI5MzciIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiMyMDIxMjQiPlE4XzA8L3RleHQ+CiAgICAgICAgPHJlY3QgeD0iMjU2IiB5PSI5MTgiIHdpZHRoPSI3NTAiIGhlaWdodD0iMjYiIHJ4PSI1IiBmaWxsPSIjZjBlY2RmIi8+CiAgICAgICAgPHJlY3QgeD0iMjU2IiB5PSI5MTgiIHdpZHRoPSI2MDcuMzE4MzU3MzE4MzU3NCIgaGVpZ2h0PSIyNiIgcng9IjUiIGZpbGw9IiMyODRlN2EiLz4KICAgICAgICA8dGV4dCB4PSIxMDIyIiB5PSI5MzciIGZvbnQtc2l6ZT0iMTciIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMyMDIxMjQiPjQ2LjE0czwvdGV4dD4KICAgICAgPC9nPgogICAgICA8Zz4KICAgICAgICA8Y2lyY2xlIGN4PSI3OCIgY3k9Ijk3NiIgcj0iNSIgZmlsbD0iI2FkNGYyZiIvPgogICAgICAgIDx0ZXh0IHg9IjkwIiB5PSI5ODEiIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiMyMDIxMjQiPm5hdGl2ZSBRNF9LX008L3RleHQ+CiAgICAgICAgPHJlY3QgeD0iMjU2IiB5PSI5NjIiIHdpZHRoPSI3NTAiIGhlaWdodD0iMjYiIHJ4PSI1IiBmaWxsPSIjZjBlY2RmIi8+CiAgICAgICAgPHJlY3QgeD0iMjU2IiB5PSI5NjIiIHdpZHRoPSI3NTAiIGhlaWdodD0iMjYiIHJ4PSI1IiBmaWxsPSIjYWQ0ZjJmIi8+CiAgICAgICAgPHRleHQgeD0iMTAyMiIgeT0iOTgxIiBmb250LXNpemU9IjE3IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMjAyMTI0Ij41Ni45OHM8L3RleHQ+CiAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+Cg==" alt="serving TTFT" loading="lazy"><figcaption>serving TTFT</figcaption></figure>
+<p>prefill 专项测试里，<code>ctx=131072</code>、<code>input=1024</code>、<code>output=1</code> 时，单并发和 32 并发看到的是两种不同问题：</p>
+<figure class="image-figure"><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjYwNCIgdmlld0JveD0iMCAwIDEyMDAgNjA0IiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IlByZWZpbGwg5Y6L5rWL77yaMTAyNCBpbnB1dCAvIDEgb3V0cHV0Ij4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZmZmZGY3Ii8+CiAgPHRleHQgeD0iNjAiIHk9IjU4IiBmb250LXNpemU9IjM0IiBmb250LXdlaWdodD0iODUwIiBmaWxsPSIjMjAyMTI0Ij5QcmVmaWxsIOWOi+a1i++8mjEwMjQgaW5wdXQgLyAxIG91dHB1dDwvdGV4dD4KICA8dGV4dCB4PSI2MCIgeT0iODgiIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiM2MjY2NWYiPmN0eCAxMjhL77yMdkxMTSBiZW5jaCBzZXJ2Ze+8m+WQjuerryAtbnAgMe+8jOaJgOS7peW5tuWPkeS4u+imgeWOi+WHuumYn+WIl+WSjOaMgee7reWQnuWQkDwvdGV4dD4KICAKICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAsMCkiPgogICAgICA8cmVjdCB4PSI0NiIgeT0iMTIwIiB3aWR0aD0iMTEwOCIgaGVpZ2h0PSIxOTYiIHJ4PSIxMiIgZmlsbD0iI2ZmZmVmYSIgc3Ryb2tlPSIjZDlkNWM4Ii8+CiAgICAgIDx0ZXh0IHg9IjcwIiB5PSIxNTQiIGZvbnQtc2l6ZT0iMjUiIGZvbnQtd2VpZ2h0PSI4MDAiIGZpbGw9IiMyMDIxMjQiPlRvdGFsIHRva2VuIHRocm91Z2hwdXQ8L3RleHQ+CiAgICAgIDx0ZXh0IHg9IjcwIiB5PSIxODIiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM2MjY2NWYiPuaAuyB0b2tlbiDlkJ7lkJDvvIzln7rmnKzlsLHmmK8gcHJlZmlsbCDlkJ7lkJDvvIzotorpq5jotorlpb08L3RleHQ+CiAgICAgIDxsaW5lIHgxPSI0NDMuNSIgeTE9IjE5NiIgeDI9IjQ0My41IiB5Mj0iMjg0IiBzdHJva2U9IiNlYmU2ZDkiIHN0cm9rZS13aWR0aD0iMSIvPjxsaW5lIHgxPSI2MzEiIHkxPSIxOTYiIHgyPSI2MzEiIHkyPSIyODQiIHN0cm9rZT0iI2ViZTZkOSIgc3Ryb2tlLXdpZHRoPSIxIi8+PGxpbmUgeDE9IjgxOC41IiB5MT0iMTk2IiB4Mj0iODE4LjUiIHkyPSIyODQiIHN0cm9rZT0iI2ViZTZkOSIgc3Ryb2tlLXdpZHRoPSIxIi8+PGxpbmUgeDE9IjEwMDYiIHkxPSIxOTYiIHgyPSIxMDA2IiB5Mj0iMjg0IiBzdHJva2U9IiNlYmU2ZDkiIHN0cm9rZS13aWR0aD0iMSIvPgogICAgICAKICAgICAgPGc+CiAgICAgICAgPGNpcmNsZSBjeD0iNzgiIGN5PSIyMjAiIHI9IjUiIGZpbGw9IiMwZDZmNjgiLz4KICAgICAgICA8dGV4dCB4PSI5MCIgeT0iMjI1IiBmb250LXNpemU9IjE3IiBmaWxsPSIjMjAyMTI0Ij5jMzIgLyBuMTAwPC90ZXh0PgogICAgICAgIDxyZWN0IHg9IjI1NiIgeT0iMjA2IiB3aWR0aD0iNzUwIiBoZWlnaHQ9IjI2IiByeD0iNSIgZmlsbD0iI2YwZWNkZiIvPgogICAgICAgIDxyZWN0IHg9IjI1NiIgeT0iMjA2IiB3aWR0aD0iNzUwIiBoZWlnaHQ9IjI2IiByeD0iNSIgZmlsbD0iIzBkNmY2OCIvPgogICAgICAgIDx0ZXh0IHg9IjEwMjIiIHk9IjIyNSIgZm9udC1zaXplPSIxNyIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzIwMjEyNCI+NzYuNDQgdG9rL3M8L3RleHQ+CiAgICAgIDwvZz4KICAgICAgPGc+CiAgICAgICAgPGNpcmNsZSBjeD0iNzgiIGN5PSIyNjQiIHI9IjUiIGZpbGw9IiMyODRlN2EiLz4KICAgICAgICA8dGV4dCB4PSI5MCIgeT0iMjY5IiBmb250LXNpemU9IjE3IiBmaWxsPSIjMjAyMTI0Ij5jMSAvIG4xMDwvdGV4dD4KICAgICAgICA8cmVjdCB4PSIyNTYiIHk9IjI1MCIgd2lkdGg9Ijc1MCIgaGVpZ2h0PSIyNiIgcng9IjUiIGZpbGw9IiNmMGVjZGYiLz4KICAgICAgICA8cmVjdCB4PSIyNTYiIHk9IjI1MCIgd2lkdGg9IjcxMS4wNDc4ODA2OTA3Mzc5IiBoZWlnaHQ9IjI2IiByeD0iNSIgZmlsbD0iIzI4NGU3YSIvPgogICAgICAgIDx0ZXh0IHg9IjEwMjIiIHk9IjI2OSIgZm9udC1zaXplPSIxNyIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzIwMjEyNCI+NzIuNDcgdG9rL3M8L3RleHQ+CiAgICAgIDwvZz4KICAgIDwvZz4KICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAsMCkiPgogICAgICA8cmVjdCB4PSI0NiIgeT0iMzQ0IiB3aWR0aD0iMTEwOCIgaGVpZ2h0PSIxOTYiIHJ4PSIxMiIgZmlsbD0iI2ZmZmVmYSIgc3Ryb2tlPSIjZDlkNWM4Ii8+CiAgICAgIDx0ZXh0IHg9IjcwIiB5PSIzNzgiIGZvbnQtc2l6ZT0iMjUiIGZvbnQtd2VpZ2h0PSI4MDAiIGZpbGw9IiMyMDIxMjQiPk1lYW4gVFRGVDwvdGV4dD4KICAgICAgPHRleHQgeD0iNzAiIHk9IjQwNiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzYyNjY1ZiI+6aaWIHRva2VuIOW7tui/n++8jOW5tuWPkSAzMiDml7bkuLvopoHmmK/mjpLpmJ/ml7bpl7TvvIzotornn63otorlpb08L3RleHQ+CiAgICAgIDxsaW5lIHgxPSI0NDMuNSIgeTE9IjQyMCIgeDI9IjQ0My41IiB5Mj0iNTA4IiBzdHJva2U9IiNlYmU2ZDkiIHN0cm9rZS13aWR0aD0iMSIvPjxsaW5lIHgxPSI2MzEiIHkxPSI0MjAiIHgyPSI2MzEiIHkyPSI1MDgiIHN0cm9rZT0iI2ViZTZkOSIgc3Ryb2tlLXdpZHRoPSIxIi8+PGxpbmUgeDE9IjgxOC41IiB5MT0iNDIwIiB4Mj0iODE4LjUiIHkyPSI1MDgiIHN0cm9rZT0iI2ViZTZkOSIgc3Ryb2tlLXdpZHRoPSIxIi8+PGxpbmUgeDE9IjEwMDYiIHkxPSI0MjAiIHgyPSIxMDA2IiB5Mj0iNTA4IiBzdHJva2U9IiNlYmU2ZDkiIHN0cm9rZS13aWR0aD0iMSIvPgogICAgICAKICAgICAgPGc+CiAgICAgICAgPGNpcmNsZSBjeD0iNzgiIGN5PSI0NDQiIHI9IjUiIGZpbGw9IiMyODRlN2EiLz4KICAgICAgICA8dGV4dCB4PSI5MCIgeT0iNDQ5IiBmb250LXNpemU9IjE3IiBmaWxsPSIjMjAyMTI0Ij5jMSAvIG4xMDwvdGV4dD4KICAgICAgICA8cmVjdCB4PSIyNTYiIHk9IjQzMCIgd2lkdGg9Ijc1MCIgaGVpZ2h0PSIyNiIgcng9IjUiIGZpbGw9IiNmMGVjZGYiLz4KICAgICAgICA8cmVjdCB4PSIyNTYiIHk9IjQzMCIgd2lkdGg9IjI5LjMzODUzNDMxODIwMDY3NiIgaGVpZ2h0PSIyNiIgcng9IjUiIGZpbGw9IiMyODRlN2EiLz4KICAgICAgICA8dGV4dCB4PSIxMDIyIiB5PSI0NDkiIGZvbnQtc2l6ZT0iMTciIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMyMDIxMjQiPjE0LjE0czwvdGV4dD4KICAgICAgPC9nPgogICAgICA8Zz4KICAgICAgICA8Y2lyY2xlIGN4PSI3OCIgY3k9IjQ4OCIgcj0iNSIgZmlsbD0iIzBkNmY2OCIvPgogICAgICAgIDx0ZXh0IHg9IjkwIiB5PSI0OTMiIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiMyMDIxMjQiPmMzMiAvIG4xMDA8L3RleHQ+CiAgICAgICAgPHJlY3QgeD0iMjU2IiB5PSI0NzQiIHdpZHRoPSI3NTAiIGhlaWdodD0iMjYiIHJ4PSI1IiBmaWxsPSIjZjBlY2RmIi8+CiAgICAgICAgPHJlY3QgeD0iMjU2IiB5PSI0NzQiIHdpZHRoPSI3NTAiIGhlaWdodD0iMjYiIHJ4PSI1IiBmaWxsPSIjMGQ2ZjY4Ii8+CiAgICAgICAgPHRleHQgeD0iMTAyMiIgeT0iNDkzIiBmb250LXNpemU9IjE3IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMjAyMTI0Ij4zNjEuNDdzPC90ZXh0PgogICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPgo=" alt="prefill c32" loading="lazy"><figcaption>prefill c32</figcaption></figure>
+<div class="table-wrap"><table><thead><tr><th>场景</th><th>请求数</th><th>并发</th><th>总吞吐</th></tr></thead><tbody><tr><td>c1 / n10</td><td>10</td><td>1</td><td>72.47 tok/s</td></tr><tr><td>c32 / n100</td><td>100</td><td>32</td><td>76.44 tok/s</td></tr></tbody></table></div>
+<p>吞吐没有因为并发 32 暴涨，说明瓶颈不是简单“请求太少没喂饱”。但 c32 能验证 server 在多请求排队下的稳定性，这个比单请求漂亮数字更重要。</p>
+<h2 id="为什么-mxfp4-moe-反而更好">为什么 MXFP4_MOE 反而更好</h2>
+<p>直觉上，Q4 应该比更低精度更稳，Q8 应该比 Q4 更慢但质量更好。但这次性能不是按“位数越高越慢、位数越低越快”简单排序。</p>
+<p>关键在 DeepSeek V4 Flash 的结构。它是 MoE 模型，大量参数在 routed experts 里，不是每个 token 都激活全部专家。MXFP4_MOE 的思路是重点压 MoE experts，同时保留对质量和执行路径更敏感的部分。它不是把所有东西粗暴打到同一个低精度。</p>
+<p>这有几个可能原因：</p>
+<ol><li>更少的权重带宽压力。W7900D 的算力不是唯一瓶颈，权重搬运和多卡分层也很重要。</li><li>MoE experts 占空间大，但每 token 只走一部分，针对这部分做低比特更划算。</li><li>一些投影、路由、输出层保留较高精度，减少质量损失，也减少奇怪的数值问题。</li><li>layer split 下，单卡负责一段层，低比特专家能降低每层权重读取压力。</li></ol>
+<p>所以 MXFP4_MOE 的优势不是“4 bit 魔法”，而是它更贴 DeepSeek V4 Flash 的结构。</p>
+<h2 id="长上下文-能开-不代表该一上来开">长上下文：能开，不代表该一上来开</h2>
+<p>DeepSeek V4 号称 1M context。这台机器也确实尝试过 64K、128K 和 1M。</p>
+<p>但我的结论比较保守：生产配置不要一上来就 1M。</p>
+<p>长上下文主要吃 KV cache，也会把 server slot、batch、显存碎片、cache 策略和 PCIe 多卡协作的问题全部放大。16K 能稳，不代表 128K 能稳；128K 能跑，也不代表 1M 就适合日常服务。</p>
+<p>更合理的顺序是：</p>
+<pre><code class="language-text">16K -&gt; 64K -&gt; 128K -&gt; 1M</code></pre>
+<p>每一步都用同样的 benchmark 方式测：</p>
+<pre><code class="language-text">input = 1024
+output = 1
+concurrency = 1 / 4 / 32
+num_prompts = 10 / 100</code></pre>
+<p>这比直接宣布“支持 1M”诚实得多。</p>
+<h2 id="让-agent-真的用上这个模型">让 agent 真的用上这个模型</h2>
+<p>服务跑起来还不够。我还想知道它能不能进入日常 agent 工作流。</p>
+<p>Claude Code 当时没能顺利走通 Anthropic 接口，我又试了 Pi。Pi 可以走 OpenAI tools，这和 llama-server 的 OpenAI-compatible API 更贴。于是我写了一个很小的 proxy，把本地模型接到 Pi REPL，让它能通过工具读写文件、审稿、改文章。</p>
+<p>这个验证很重要。因为很多模型“能聊天”和“能当 coding agent 用”是两件事。</p>
+<p>对 agent 来说，真正麻烦的是：</p>
+<ul><li>tool call 格式是否稳定；</li><li>上下文长了之后是否还能跟住任务；</li><li>本地代理会不会被系统代理环境变量坑到；</li><li>streaming、超时、max_tokens、错误恢复是不是能接受；</li><li>生成慢的时候，REPL 体验是不是还能忍。</li></ul>
+<p>这一步的结论是：可以用，但还需要工程包装。模型服务只是底座，agent 体验还要靠 proxy、工具协议、超时和上下文裁剪一起撑。</p>
+<h2 id="顺手给上游提了两个-pr">顺手给上游提了两个 PR</h2>
+<p>这次不是只在本地堆脚本，也有一些可以回馈上游的改动。</p>
+<p>第一个是 bati.cpp：</p>
+<pre><code class="language-text">https://github.com/batiai/bati.cpp/pull/1</code></pre>
+<p>修的是 DeepSeek V4 multi-slot 并发下的 KV cache 问题。没有这个修复，多并发 prefill benchmark 很难稳定跑完。</p>
+<p>第二个是 ds4：</p>
+<pre><code class="language-text">https://github.com/antirez/ds4/pull/69</code></pre>
+<p>ds4 是 Metal-first 的项目，不适合这台 AMD 机器做生产推理。但它的 Linux build 边界可以更清楚。我做的事情是：</p>
+<ul><li>Linux 下能编译；</li><li>非 Metal 默认 CPU backend；</li><li><code>--inspect</code> 和 tokenizer 诊断能跑；</li><li><code>ds4-server</code> 在非 Metal 下明确报错；</li><li>下载脚本支持把 GGUF 放到 <code>/data</code>，并避免把 <code>.aria2</code> 半成品当完整模型。</li></ul>
+<p>这类 PR 不会改变世界，但会让下一个人少浪费几个小时。</p>
+<h2 id="这次实验给我的经验">这次实验给我的经验</h2>
+<p>第一，agent 很适合做这种“多路线试错”的活。</p>
+<p>人类最烦的是重复试：换镜像、换参数、编译、跑日志、找错误、再换一个参数。Codex 对这类事情很有耐心。只要你给它足够权限和明确目标，它可以连续干很久。</p>
+<p>第二，agent 也会走偏。</p>
+<p>尤其是新模型、新框架、新硬件交叉的时候，外部信息经常不完整。让一个 agent 只靠自己搜索，很容易在错误路线里越走越深。Hermes/GPT-5.5 那种外部调研角色很有价值，它帮我把方向校准到“W7900D + GGUF + layer split”。</p>
+<p>第三，benchmark 要像工程测试，不要像截图。</p>
+<p>只测一个请求，容易得到好看的数字。真正有用的是固定参数、保存日志、保存 JSON、记录失败、重复运行，并且把 benchmark client 和 server 配置都写清楚。</p>
+<p>第四，低比特不是越低越快。</p>
+<p>这次最好的点不是 Q2，也不是 native Q4，而是 MXFP4_MOE。原因很可能是它刚好贴合 DeepSeek V4 Flash 的 MoE 结构和这台机器的带宽/互联特性。</p>
+<p>第五，上下文窗口要逐级开。</p>
+<p>1M context 是能力上限，不是默认配置。先让 16K 稳，再上 64K、128K，最后再谈 1M，这样才不会把性能问题、稳定性问题和显存问题搅成一团。</p>
+<h2 id="如果现在重来一遍">如果现在重来一遍</h2>
+<p>我会直接按这个顺序做：</p>
+<ol><li>确认 ROCm、GPU 可见性、<code>rocminfo</code> 和 <code>rocm-smi</code>。</li><li>用 ModelScope/HF 准备 DeepSeek-V4-Flash 官方权重。</li><li>用 bati.cpp / llama.cpp 路线转 GGUF。</li><li>先跑 Q8_0 smoke test，确认模型结构和服务链路。</li><li>转 MXFP4_MOE，作为主力方案。</li><li>用 layer split 启 <code>llama-server</code>。</li><li>用 vLLM benchmark client 测 OpenAI endpoint。</li><li>先测 16K，再测 64K、128K。</li><li>开 <code>-np</code> 和并发压测，修 multi-slot/KV 问题。</li><li>最后接 Pi/Claude Code 这类 agent，看能不能进入真实工作流。</li></ol>
+<p>这比一上来追 vLLM Pro recipe、1M context、最高并发要稳得多。</p>
+<h2 id="结尾">结尾</h2>
+<p>这次实验最有意思的地方不是“DeepSeek-V4-Flash 能不能跑”，而是工作方式变了。</p>
+<p>以前这种活要么自己熬夜试，要么等社区有人写完整教程。现在可以把机器交给 agent，让它去撞墙、读日志、换路线、写脚本、跑 benchmark、甚至整理文章。</p>
+<p>但这不是“人不用懂了”。正好相反，人要更清楚地知道怎么拆任务、怎么判断路线、什么时候打断 agent、哪些数字可信、哪些结果只是偶然跑通。</p>
+<p>这台 8 x W7900D 最后跑起来了。Codex 干了很多脏活，Hermes 帮忙把方向拉正，Pi 验证了本地模型能进入 agent 工作流。</p>
+<p>剩下的事情就比较传统了：继续调 kernel，继续优化 KV cache，继续测更长上下文，继续把本地服务变成真正稳定的基础设施。</p>
+<p>也就是说，故事刚从“能跑”进入“好用”。</p>
+      </article>
+    </main>
+  </div>
+</body>
+</html>

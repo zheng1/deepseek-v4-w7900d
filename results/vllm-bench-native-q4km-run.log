@@ -1,0 +1,308 @@
+INFO 05-09 10:39:04 [main.py:66] Unspecified platform detected, switching to CPU Platform instead.
+INFO 05-09 10:39:04 [importing.py:44] Triton is installed but 0 active driver(s) found (expected 1). Disabling Triton to prevent runtime errors.
+INFO 05-09 10:39:04 [importing.py:68] Triton not installed or not compatible; certain GPU-related functions will not be available.
+INFO 05-09 10:39:06 [nixl_utils.py:20] Setting UCX_RCACHE_MAX_UNRELEASED to '1024' to avoid a rare memory leak in UCX when using NIXL.
+WARNING 05-09 10:39:06 [nixl_utils.py:34] NIXL is not available
+WARNING 05-09 10:39:06 [nixl_utils.py:44] NIXL agent config is not available
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x795bfdde2840>, trust_remote_code=True, seed=0, num_prompts=8, dataset_name='random', no_stream=False, dataset_path=None, no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, spec_bench_output_len=256, spec_bench_category=None, sonnet_input_len=550, sonnet_output_len=150, sonnet_prefix_len=200, sharegpt_output_len=None, blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=128, random_output_len=64, random_range_ratio='0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8080', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=1, model='DeepSeek-V4-Flash-native-Q4_K_M-batiai.gguf', input_len=None, output_len=None, tokenizer='/data/models/deepseek-ai/DeepSeek-V4-Flash', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=True, save_detailed=False, append_result=False, metadata=['backend_server=bati.cpp', 'model=DeepSeek-V4-Flash-native-Q4_K_M-batiai.gguf', 'split_mode=layer', 'server_np=1', 'ctx=16384', 'gpus=8xW7900D'], result_dir='/results', result_filename='random-i128-o64-n8-c1.json', ignore_eos=True, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='bench-0db875f8-', top_p=None, top_k=None, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name='DeepSeek-V4-Flash-native-Q4_K_M-batiai.gguf', lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False)
+INFO 05-09 10:39:06 [config.py:775] Detected quantization_config.scale_fmt=ue8m0; enabling UE8M0 for DeepGEMM.
+INFO 05-09 10:39:07 [utils.py:90] Sampling input_len from [128, 128] and output_len from [64, 64]
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 1
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     8         
+Failed requests:                         0         
+Maximum request concurrency:             1         
+Benchmark duration (s):                  80.46     
+Total input tokens:                      1024      
+Total generated tokens:                  512       
+Request throughput (req/s):              0.10      
+Output token throughput (tok/s):         6.36      
+Peak output token throughput (tok/s):    9.00      
+Peak concurrent requests:                2.00      
+Total token throughput (tok/s):          19.09     
+---------------Time to First Token----------------
+Mean TTFT (ms):                          2041.30   
+Median TTFT (ms):                        1870.79   
+P50 TTFT (ms):                           1870.79   
+P90 TTFT (ms):                           2318.63   
+P95 TTFT (ms):                           2827.81   
+P99 TTFT (ms):                           3235.16   
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          127.24    
+Median TPOT (ms):                        128.75    
+P50 TPOT (ms):                           128.75    
+P90 TPOT (ms):                           129.64    
+P95 TPOT (ms):                           129.74    
+P99 TPOT (ms):                           129.81    
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           125.25    
+Median ITL (ms):                         123.12    
+P50 ITL (ms):                            123.12    
+P90 ITL (ms):                            143.43    
+P95 ITL (ms):                            145.50    
+P99 ITL (ms):                            150.78    
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          10057.43  
+Median E2EL (ms):                        9975.79   
+P50 E2EL (ms):                           9975.79   
+P90 E2EL (ms):                           10382.04  
+P95 E2EL (ms):                           10755.76  
+P99 E2EL (ms):                           11054.74  
+==================================================
+INFO 05-09 10:40:39 [main.py:66] Unspecified platform detected, switching to CPU Platform instead.
+INFO 05-09 10:40:39 [importing.py:44] Triton is installed but 0 active driver(s) found (expected 1). Disabling Triton to prevent runtime errors.
+INFO 05-09 10:40:39 [importing.py:68] Triton not installed or not compatible; certain GPU-related functions will not be available.
+INFO 05-09 10:40:41 [nixl_utils.py:20] Setting UCX_RCACHE_MAX_UNRELEASED to '1024' to avoid a rare memory leak in UCX when using NIXL.
+WARNING 05-09 10:40:41 [nixl_utils.py:34] NIXL is not available
+WARNING 05-09 10:40:41 [nixl_utils.py:44] NIXL agent config is not available
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x7ca496dba840>, trust_remote_code=True, seed=0, num_prompts=16, dataset_name='random', no_stream=False, dataset_path=None, no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, spec_bench_output_len=256, spec_bench_category=None, sonnet_input_len=550, sonnet_output_len=150, sonnet_prefix_len=200, sharegpt_output_len=None, blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=128, random_output_len=64, random_range_ratio='0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8080', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=4, model='DeepSeek-V4-Flash-native-Q4_K_M-batiai.gguf', input_len=None, output_len=None, tokenizer='/data/models/deepseek-ai/DeepSeek-V4-Flash', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=True, save_detailed=False, append_result=False, metadata=['backend_server=bati.cpp', 'model=DeepSeek-V4-Flash-native-Q4_K_M-batiai.gguf', 'split_mode=layer', 'server_np=1', 'ctx=16384', 'gpus=8xW7900D'], result_dir='/results', result_filename='random-i128-o64-n16-c4.json', ignore_eos=True, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='bench-19bd677a-', top_p=None, top_k=None, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name='DeepSeek-V4-Flash-native-Q4_K_M-batiai.gguf', lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False)
+INFO 05-09 10:40:41 [config.py:775] Detected quantization_config.scale_fmt=ue8m0; enabling UE8M0 for DeepGEMM.
+INFO 05-09 10:40:43 [utils.py:90] Sampling input_len from [128, 128] and output_len from [64, 64]
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 4
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     16        
+Failed requests:                         0         
+Maximum request concurrency:             4         
+Benchmark duration (s):                  159.92    
+Total input tokens:                      2048      
+Total generated tokens:                  1024      
+Request throughput (req/s):              0.10      
+Output token throughput (tok/s):         6.40      
+Peak output token throughput (tok/s):    9.00      
+Peak concurrent requests:                5.00      
+Total token throughput (tok/s):          19.21     
+---------------Time to First Token----------------
+Mean TTFT (ms):                          28143.17  
+Median TTFT (ms):                        31674.00  
+P50 TTFT (ms):                           31674.00  
+P90 TTFT (ms):                           32432.00  
+P95 TTFT (ms):                           32565.14  
+P99 TTFT (ms):                           32642.30  
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          128.18    
+Median TPOT (ms):                        129.23    
+P50 TPOT (ms):                           129.23    
+P90 TPOT (ms):                           130.65    
+P95 TPOT (ms):                           131.07    
+P99 TPOT (ms):                           131.93    
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           126.18    
+Median ITL (ms):                         124.77    
+P50 ITL (ms):                            124.77    
+P90 ITL (ms):                            144.20    
+P95 ITL (ms):                            146.44    
+P99 ITL (ms):                            152.00    
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          36218.74  
+Median E2EL (ms):                        39681.85  
+P50 E2EL (ms):                           39681.85  
+P90 E2EL (ms):                           40502.30  
+P95 E2EL (ms):                           40677.60  
+P99 E2EL (ms):                           40780.85  
+==================================================
+INFO 05-09 10:43:34 [main.py:66] Unspecified platform detected, switching to CPU Platform instead.
+INFO 05-09 10:43:34 [importing.py:44] Triton is installed but 0 active driver(s) found (expected 1). Disabling Triton to prevent runtime errors.
+INFO 05-09 10:43:34 [importing.py:68] Triton not installed or not compatible; certain GPU-related functions will not be available.
+INFO 05-09 10:43:35 [nixl_utils.py:20] Setting UCX_RCACHE_MAX_UNRELEASED to '1024' to avoid a rare memory leak in UCX when using NIXL.
+WARNING 05-09 10:43:35 [nixl_utils.py:34] NIXL is not available
+WARNING 05-09 10:43:35 [nixl_utils.py:44] NIXL agent config is not available
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x791cd79e22a0>, trust_remote_code=True, seed=0, num_prompts=4, dataset_name='random', no_stream=False, dataset_path=None, no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, spec_bench_output_len=256, spec_bench_category=None, sonnet_input_len=550, sonnet_output_len=150, sonnet_prefix_len=200, sharegpt_output_len=None, blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=128, random_range_ratio='0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8080', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=1, model='DeepSeek-V4-Flash-native-Q4_K_M-batiai.gguf', input_len=None, output_len=None, tokenizer='/data/models/deepseek-ai/DeepSeek-V4-Flash', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=True, save_detailed=False, append_result=False, metadata=['backend_server=bati.cpp', 'model=DeepSeek-V4-Flash-native-Q4_K_M-batiai.gguf', 'split_mode=layer', 'server_np=1', 'ctx=16384', 'gpus=8xW7900D'], result_dir='/results', result_filename='random-i1024-o128-n4-c1.json', ignore_eos=True, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='bench-2f3d476e-', top_p=None, top_k=None, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name='DeepSeek-V4-Flash-native-Q4_K_M-batiai.gguf', lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False)
+INFO 05-09 10:43:36 [config.py:775] Detected quantization_config.scale_fmt=ue8m0; enabling UE8M0 for DeepGEMM.
+INFO 05-09 10:43:37 [utils.py:90] Sampling input_len from [1024, 1024] and output_len from [128, 128]
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 1
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     4         
+Failed requests:                         0         
+Maximum request concurrency:             1         
+Benchmark duration (s):                  131.09    
+Total input tokens:                      4096      
+Total generated tokens:                  512       
+Request throughput (req/s):              0.03      
+Output token throughput (tok/s):         3.91      
+Peak output token throughput (tok/s):    9.00      
+Peak concurrent requests:                2.00      
+Total token throughput (tok/s):          35.15     
+---------------Time to First Token----------------
+Mean TTFT (ms):                          15831.11  
+Median TTFT (ms):                        15623.05  
+P50 TTFT (ms):                           15623.05  
+P90 TTFT (ms):                           16245.58  
+P95 TTFT (ms):                           16370.82  
+P99 TTFT (ms):                           16471.00  
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          133.40    
+Median TPOT (ms):                        133.34    
+P50 TPOT (ms):                           133.34    
+P90 TPOT (ms):                           133.58    
+P95 TPOT (ms):                           133.63    
+P99 TPOT (ms):                           133.67    
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           132.36    
+Median ITL (ms):                         129.50    
+P50 ITL (ms):                            129.50    
+P90 ITL (ms):                            149.77    
+P95 ITL (ms):                            151.93    
+P99 ITL (ms):                            158.58    
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          32772.58  
+Median E2EL (ms):                        32570.88  
+P50 E2EL (ms):                           32570.88  
+P90 E2EL (ms):                           33177.86  
+P95 E2EL (ms):                           33305.51  
+P99 E2EL (ms):                           33407.63  
+==================================================
+INFO 05-09 10:46:00 [main.py:66] Unspecified platform detected, switching to CPU Platform instead.
+INFO 05-09 10:46:00 [importing.py:44] Triton is installed but 0 active driver(s) found (expected 1). Disabling Triton to prevent runtime errors.
+INFO 05-09 10:46:00 [importing.py:68] Triton not installed or not compatible; certain GPU-related functions will not be available.
+INFO 05-09 10:46:01 [nixl_utils.py:20] Setting UCX_RCACHE_MAX_UNRELEASED to '1024' to avoid a rare memory leak in UCX when using NIXL.
+WARNING 05-09 10:46:01 [nixl_utils.py:34] NIXL is not available
+WARNING 05-09 10:46:01 [nixl_utils.py:44] NIXL agent config is not available
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x7789d13c2840>, trust_remote_code=True, seed=0, num_prompts=8, dataset_name='random', no_stream=False, dataset_path=None, no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, spec_bench_output_len=256, spec_bench_category=None, sonnet_input_len=550, sonnet_output_len=150, sonnet_prefix_len=200, sharegpt_output_len=None, blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=128, random_range_ratio='0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8080', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=4, model='DeepSeek-V4-Flash-native-Q4_K_M-batiai.gguf', input_len=None, output_len=None, tokenizer='/data/models/deepseek-ai/DeepSeek-V4-Flash', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=True, save_detailed=False, append_result=False, metadata=['backend_server=bati.cpp', 'model=DeepSeek-V4-Flash-native-Q4_K_M-batiai.gguf', 'split_mode=layer', 'server_np=1', 'ctx=16384', 'gpus=8xW7900D'], result_dir='/results', result_filename='random-i1024-o128-n8-c4.json', ignore_eos=True, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='bench-2d035462-', top_p=None, top_k=None, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name='DeepSeek-V4-Flash-native-Q4_K_M-batiai.gguf', lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False)
+INFO 05-09 10:46:01 [config.py:775] Detected quantization_config.scale_fmt=ue8m0; enabling UE8M0 for DeepGEMM.
+INFO 05-09 10:46:03 [utils.py:90] Sampling input_len from [1024, 1024] and output_len from [128, 128]
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 4
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     8         
+Failed requests:                         0         
+Maximum request concurrency:             4         
+Benchmark duration (s):                  207.90    
+Total input tokens:                      8192      
+Total generated tokens:                  1024      
+Request throughput (req/s):              0.04      
+Output token throughput (tok/s):         4.93      
+Peak output token throughput (tok/s):    9.00      
+Peak concurrent requests:                5.00      
+Total token throughput (tok/s):          44.33     
+---------------Time to First Token----------------
+Mean TTFT (ms):                          63500.83  
+Median TTFT (ms):                        70195.05  
+P50 TTFT (ms):                           70195.05  
+P90 TTFT (ms):                           102826.76 
+P95 TTFT (ms):                           106809.79 
+P99 TTFT (ms):                           109996.22 
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          131.98    
+Median TPOT (ms):                        133.46    
+P50 TPOT (ms):                           133.46    
+P90 TPOT (ms):                           134.05    
+P95 TPOT (ms):                           134.10    
+P99 TPOT (ms):                           134.14    
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           130.95    
+Median ITL (ms):                         128.53    
+P50 ITL (ms):                            128.53    
+P90 ITL (ms):                            149.57    
+P95 ITL (ms):                            151.48    
+P99 ITL (ms):                            154.20    
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          80262.87  
+Median E2EL (ms):                        86742.73  
+P50 E2EL (ms):                           86742.73  
+P90 E2EL (ms):                           119520.52 
+P95 E2EL (ms):                           123218.75 
+P99 E2EL (ms):                           126177.33 
+==================================================
+INFO 05-09 10:49:42 [main.py:66] Unspecified platform detected, switching to CPU Platform instead.
+INFO 05-09 10:49:42 [importing.py:44] Triton is installed but 0 active driver(s) found (expected 1). Disabling Triton to prevent runtime errors.
+INFO 05-09 10:49:42 [importing.py:68] Triton not installed or not compatible; certain GPU-related functions will not be available.
+INFO 05-09 10:49:44 [nixl_utils.py:20] Setting UCX_RCACHE_MAX_UNRELEASED to '1024' to avoid a rare memory leak in UCX when using NIXL.
+WARNING 05-09 10:49:44 [nixl_utils.py:34] NIXL is not available
+WARNING 05-09 10:49:44 [nixl_utils.py:44] NIXL agent config is not available
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x76105b9be840>, trust_remote_code=True, seed=0, num_prompts=2, dataset_name='random', no_stream=False, dataset_path=None, no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, spec_bench_output_len=256, spec_bench_category=None, sonnet_input_len=550, sonnet_output_len=150, sonnet_prefix_len=200, sharegpt_output_len=None, blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=4096, random_output_len=64, random_range_ratio='0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8080', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=1, model='DeepSeek-V4-Flash-native-Q4_K_M-batiai.gguf', input_len=None, output_len=None, tokenizer='/data/models/deepseek-ai/DeepSeek-V4-Flash', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=True, save_detailed=False, append_result=False, metadata=['backend_server=bati.cpp', 'model=DeepSeek-V4-Flash-native-Q4_K_M-batiai.gguf', 'split_mode=layer', 'server_np=1', 'ctx=16384', 'gpus=8xW7900D'], result_dir='/results', result_filename='random-i4096-o64-n2-c1.json', ignore_eos=True, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='bench-23cfc4bf-', top_p=None, top_k=None, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name='DeepSeek-V4-Flash-native-Q4_K_M-batiai.gguf', lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False)
+INFO 05-09 10:49:44 [config.py:775] Detected quantization_config.scale_fmt=ue8m0; enabling UE8M0 for DeepGEMM.
+INFO 05-09 10:49:46 [utils.py:90] Sampling input_len from [4096, 4096] and output_len from [64, 64]
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 1
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     2         
+Failed requests:                         0         
+Maximum request concurrency:             1         
+Benchmark duration (s):                  132.37    
+Total input tokens:                      8192      
+Total generated tokens:                  128       
+Request throughput (req/s):              0.02      
+Output token throughput (tok/s):         0.97      
+Peak output token throughput (tok/s):    8.00      
+Peak concurrent requests:                2.00      
+Total token throughput (tok/s):          62.86     
+---------------Time to First Token----------------
+Mean TTFT (ms):                          56978.58  
+Median TTFT (ms):                        56978.58  
+P50 TTFT (ms):                           56978.58  
+P90 TTFT (ms):                           58359.78  
+P95 TTFT (ms):                           58532.43  
+P99 TTFT (ms):                           58670.55  
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          146.11    
+Median TPOT (ms):                        146.11    
+P50 TPOT (ms):                           146.11    
+P90 TPOT (ms):                           146.72    
+P95 TPOT (ms):                           146.80    
+P99 TPOT (ms):                           146.86    
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           143.83    
+Median ITL (ms):                         142.26    
+P50 ITL (ms):                            142.26    
+P90 ITL (ms):                            162.10    
+P95 ITL (ms):                            165.35    
+P99 ITL (ms):                            176.26    
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          66183.75  
+Median E2EL (ms):                        66183.75  
+P50 E2EL (ms):                           66183.75  
+P90 E2EL (ms):                           67603.37  
+P95 E2EL (ms):                           67780.83  
+P99 E2EL (ms):                           67922.79  
+==================================================
+	Command being timed: "/root/deepseek-v4-w7900d/scripts/run_vllm_bench_openai.sh"
+	User time (seconds): 0.12
+	System time (seconds): 0.13
+	Percent of CPU this job got: 0%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 13:08.81
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 27648
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 19563
+	Voluntary context switches: 4981
+	Involuntary context switches: 17
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 320
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

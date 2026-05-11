@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DeepSeek V4 Flash on 8 x W7900D</title>
+  <style>
+    body {
+      margin: 0;
+      font: 16px/1.7 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f6f5ef;
+      color: #202124;
+    }
+    main {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 56px 22px;
+    }
+    h1 {
+      margin: 0 0 16px;
+      font-size: clamp(32px, 5vw, 54px);
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+    p {
+      margin: 0 0 18px;
+      color: #555950;
+    }
+    a {
+      color: #0d6f68;
+      text-underline-offset: 3px;
+    }
+    .links {
+      display: grid;
+      gap: 12px;
+      margin-top: 28px;
+    }
+    .link {
+      display: block;
+      padding: 16px 18px;
+      border: 1px solid #d9d5c8;
+      border-radius: 8px;
+      background: #fffefa;
+      text-decoration: none;
+      color: #202124;
+    }
+    .link strong {
+      display: block;
+      margin-bottom: 4px;
+      color: #0d6f68;
+    }
+    .link span {
+      color: #62665f;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>DeepSeek V4 Flash on 8 x AMD W7900D</h1>
+    <p>一次真实的本地大模型部署实验：Codex 在 8 张 AMD Radeon PRO W7900D 上尝试 vLLM、SGLang、Ollama、llama.cpp/bati.cpp、不同 GGUF 量化和多卡 serving，最后整理成博客和 benchmark 报告。</p>
+
+    <div class="links">
+      <a class="link" href="./deepseek-v4-flash-w7900d-agent-blog.html">
+        <strong>主文章：把 DeepSeek-V4-Flash 跑上 8 张 W7900D</strong>
+        <span>工程复盘版：Agent 分工、路线淘汰、性能数据、关键 PR 和后续优化方向。</span>
+      </a>
+      <a class="link" href="./deepseek-v4-flash-w7900d-codex-story-deepseek-v4-pro.html">
+        <strong>早期长文版本</strong>
+        <span>保留原始故事线和更多细节，方便对比文章演进。</span>
+      </a>
+      <a class="link" href="./deepseek-v4-flash-w7900d-codex-story-pi-rewrite.html">
+        <strong>Pi 改写版本</strong>
+        <span>使用本地模型接 Pi agent 后生成的表达版本。</span>
+      </a>
+      <a class="link" href="./deepseek-v4-flash-w7900d-codex-story.html">
+        <strong>早期网页版本</strong>
+        <span>保留第一次网页化的版本，方便对比文章演进。</span>
+      </a>
+      <a class="link" href="https://github.com/zheng1/deepseek-v4-w7900d">
+        <strong>GitHub 仓库</strong>
+        <span>Markdown、脚本、benchmark 结果和相关 PR 记录。</span>
+      </a>
+    </div>
+  </main>
+</body>
+</html>

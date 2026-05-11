@@ -1,0 +1,9 @@
+ggml_cuda_init: found 8 ROCm devices (Total VRAM: 393088 MiB):
+  Device 0: AMD Radeon PRO W7900D, gfx1100 (0x1100), VMM: no, Wave Size: 32, VRAM: 49136 MiB
+  Device 1: AMD Radeon PRO W7900D, gfx1100 (0x1100), VMM: no, Wave Size: 32, VRAM: 49136 MiB
+  Device 2: AMD Radeon PRO W7900D, gfx1100 (0x1100), VMM: no, Wave Size: 32, VRAM: 49136 MiB
+  Device 3: AMD Radeon PRO W7900D, gfx1100 (0x1100), VMM: no, Wave Size: 32, VRAM: 49136 MiB
+  Device 4: AMD Radeon PRO W7900D, gfx1100 (0x1100), VMM: no, Wave Size: 32, VRAM: 49136 MiB
+  Device 5: AMD Radeon PRO W7900D, gfx1100 (0x1100), VMM: no, Wave Size: 32, VRAM: 49136 MiB
+  Device 6: AMD Radeon PRO W7900D, gfx1100 (0x1100), VMM: no, Wave Size: 32, VRAM: 49136 MiB
+  Device 7: AMD Radeon PRO W7900D, gfx1100 (0x1100), VMM: no, Wave Size: 32, VRAM: 49136 MiB

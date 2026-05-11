@@ -1,0 +1,294 @@
+ggml_cuda_init: found 8 ROCm devices (Total VRAM: 393088 MiB):
+  Device 0: AMD Radeon PRO W7900D, gfx1100 (0x1100), VMM: no, Wave Size: 32, VRAM: 49136 MiB
+  Device 1: AMD Radeon PRO W7900D, gfx1100 (0x1100), VMM: no, Wave Size: 32, VRAM: 49136 MiB
+  Device 2: AMD Radeon PRO W7900D, gfx1100 (0x1100), VMM: no, Wave Size: 32, VRAM: 49136 MiB
+  Device 3: AMD Radeon PRO W7900D, gfx1100 (0x1100), VMM: no, Wave Size: 32, VRAM: 49136 MiB
+  Device 4: AMD Radeon PRO W7900D, gfx1100 (0x1100), VMM: no, Wave Size: 32, VRAM: 49136 MiB
+  Device 5: AMD Radeon PRO W7900D, gfx1100 (0x1100), VMM: no, Wave Size: 32, VRAM: 49136 MiB
+  Device 6: AMD Radeon PRO W7900D, gfx1100 (0x1100), VMM: no, Wave Size: 32, VRAM: 49136 MiB
+  Device 7: AMD Radeon PRO W7900D, gfx1100 (0x1100), VMM: no, Wave Size: 32, VRAM: 49136 MiB
+build_info: b8933-c7b64fe06
+system_info: n_threads = 64 (n_threads_batch = 64) / 128 | ROCm : NO_VMM = 1 | PEER_MAX_BATCH_SIZE = 128 | CPU : SSE3 = 1 | SSSE3 = 1 | AVX = 1 | AVX2 = 1 | F16C = 1 | FMA = 1 | BMI2 = 1 | AVX512 = 1 | AVX512_VBMI = 1 | AVX512_VNNI = 1 | AVX512_BF16 = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 | 
+init: using 127 threads for HTTP server
+start: binding port with default address family
+main: loading model
+srv    load_model: loading model '/data/models/deepseek-v4-gguf/DeepSeek-V4-Flash-MXFP4_MOE-requant-from-Q8_0.gguf'
+llama_model_load_from_file_impl: using device ROCm0 (AMD Radeon PRO W7900D) (0000:03:00.0) - 49022 MiB free
+llama_model_load_from_file_impl: using device ROCm1 (AMD Radeon PRO W7900D) (0000:23:00.0) - 49022 MiB free
+llama_model_load_from_file_impl: using device ROCm2 (AMD Radeon PRO W7900D) (0000:43:00.0) - 49022 MiB free
+llama_model_load_from_file_impl: using device ROCm3 (AMD Radeon PRO W7900D) (0000:63:00.0) - 49022 MiB free
+llama_model_load_from_file_impl: using device ROCm4 (AMD Radeon PRO W7900D) (0000:83:00.0) - 49022 MiB free
+llama_model_load_from_file_impl: using device ROCm5 (AMD Radeon PRO W7900D) (0000:a3:00.0) - 49022 MiB free
+llama_model_load_from_file_impl: using device ROCm6 (AMD Radeon PRO W7900D) (0000:c3:00.0) - 49022 MiB free
+llama_model_load_from_file_impl: using device ROCm7 (AMD Radeon PRO W7900D) (0000:e3:00.0) - 49022 MiB free
+llama_model_loader: loaded meta data with 57 key-value pairs and 1328 tensors from /data/models/deepseek-v4-gguf/DeepSeek-V4-Flash-MXFP4_MOE-requant-from-Q8_0.gguf (version GGUF V3 (latest))
+llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
+llama_model_loader: - kv   0:                       general.architecture str              = deepseek4
+llama_model_loader: - kv   1:                               general.type str              = model
+llama_model_loader: - kv   2:                     general.sampling.top_p f32              = 1.000000
+llama_model_loader: - kv   3:                      general.sampling.temp f32              = 1.000000
+llama_model_loader: - kv   4:                               general.name str              = DeepSeek V4 Flash
+llama_model_loader: - kv   5:                         general.size_label str              = 256x8.4B
+llama_model_loader: - kv   6:                            general.license str              = mit
+llama_model_loader: - kv   7:                      deepseek4.block_count u32              = 43
+llama_model_loader: - kv   8:                   deepseek4.context_length u32              = 1048576
+llama_model_loader: - kv   9:                 deepseek4.embedding_length u32              = 4096
+llama_model_loader: - kv  10:             deepseek4.attention.head_count u32              = 64
+llama_model_loader: - kv  11:          deepseek4.attention.head_count_kv u32              = 1
+llama_model_loader: - kv  12:                deepseek4.rope.scaling.type str              = yarn
+llama_model_loader: - kv  13:              deepseek4.rope.scaling.factor f32              = 16.000000
+llama_model_loader: - kv  14: deepseek4.rope.scaling.original_context_length u32              = 65536
+llama_model_loader: - kv  15:      deepseek4.rope.scaling.yarn_beta_fast f32              = 32.000000
+llama_model_loader: - kv  16:      deepseek4.rope.scaling.yarn_beta_slow f32              = 1.000000
+llama_model_loader: - kv  17:                   deepseek4.rope.freq_base f32              = 10000.000000
+llama_model_loader: - kv  18: deepseek4.attention.layer_norm_rms_epsilon f32              = 0.000001
+llama_model_loader: - kv  19:                deepseek4.expert_used_count u32              = 6
+llama_model_loader: - kv  20:               deepseek4.expert_gating_func u32              = 4
+llama_model_loader: - kv  21:             deepseek4.attention.key_length u32              = 512
+llama_model_loader: - kv  22:           deepseek4.attention.value_length u32              = 512
+llama_model_loader: - kv  23:                       deepseek4.vocab_size u32              = 129280
+llama_model_loader: - kv  24:             deepseek4.rope.dimension_count u32              = 64
+llama_model_loader: - kv  25:            deepseek4.attention.q_lora_rank u32              = 1024
+llama_model_loader: - kv  26:       deepseek4.attention.output_lora_rank u32              = 1024
+llama_model_loader: - kv  27:     deepseek4.attention.output_group_count u32              = 8
+llama_model_loader: - kv  28:        deepseek4.attention.compress_ratios arr[i32,44]      = [0, 0, 4, 128, 4, 128, 4, 128, 4, 128...
+llama_model_loader: - kv  29: deepseek4.attention.compress_rope_freq_base f32              = 160000.000000
+llama_model_loader: - kv  30:       deepseek4.expert_feed_forward_length u32              = 2048
+llama_model_loader: - kv  31:                     deepseek4.expert_count u32              = 256
+llama_model_loader: - kv  32:              deepseek4.expert_shared_count u32              = 1
+llama_model_loader: - kv  33:             deepseek4.expert_weights_scale f32              = 1.500000
+llama_model_loader: - kv  34:                 deepseek4.hash_layer_count u32              = 3
+llama_model_loader: - kv  35:              deepseek4.expert_weights_norm bool             = true
+llama_model_loader: - kv  36:                 deepseek4.swiglu_clamp_exp arr[f32,43]      = [10.000000, 10.000000, 10.000000, 10....
+llama_model_loader: - kv  37:         deepseek4.attention.sliding_window u32              = 128
+llama_model_loader: - kv  38:     deepseek4.attention.indexer.head_count u32              = 64
+llama_model_loader: - kv  39:     deepseek4.attention.indexer.key_length u32              = 128
+llama_model_loader: - kv  40:          deepseek4.attention.indexer.top_k u32              = 512
+llama_model_loader: - kv  41:             deepseek4.nextn_predict_layers u32              = 1
+llama_model_loader: - kv  42:           deepseek4.hyper_connection.count u32              = 4
+llama_model_loader: - kv  43: deepseek4.hyper_connection.sinkhorn_iterations u32              = 20
+llama_model_loader: - kv  44:         deepseek4.hyper_connection.epsilon f32              = 0.000001
+llama_model_loader: - kv  45:                       tokenizer.ggml.model str              = gpt2
+llama_model_loader: - kv  46:                         tokenizer.ggml.pre str              = joyai-llm
+llama_model_loader: - kv  47:                      tokenizer.ggml.tokens arr[str,129280]  = ["<｜begin▁of▁sentence｜>", "<�...
+llama_model_loader: - kv  48:                  tokenizer.ggml.token_type arr[i32,129280]  = [3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...
+llama_model_loader: - kv  49:                      tokenizer.ggml.merges arr[str,127741]  = ["Ġ t", "Ġ a", "i n", "Ġ Ġ", "h e...
+llama_model_loader: - kv  50:                tokenizer.ggml.bos_token_id u32              = 0
+llama_model_loader: - kv  51:                tokenizer.ggml.eos_token_id u32              = 1
+llama_model_loader: - kv  52:            tokenizer.ggml.padding_token_id u32              = 1
+llama_model_loader: - kv  53:               tokenizer.ggml.add_bos_token bool             = false
+llama_model_loader: - kv  54:               tokenizer.ggml.add_eos_token bool             = false
+llama_model_loader: - kv  55:               general.quantization_version u32              = 2
+llama_model_loader: - kv  56:                          general.file_type u32              = 38
+llama_model_loader: - type  f32:  535 tensors
+llama_model_loader: - type q8_0:  661 tensors
+llama_model_loader: - type  i32:    3 tensors
+llama_model_loader: - type mxfp4:  129 tensors
+print_info: file format = GGUF V3 (latest)
+print_info: file type   = MXFP4 MoE
+print_info: file size   = 144.43 GiB (4.36 BPW) 
+load: 0 unused tokens
+load: printing all EOG tokens:
+load:   - 1 ('<｜end▁of▁sentence｜>')
+load: special tokens cache size = 1283
+load: token to piece cache size = 0.8346 MB
+print_info: arch                  = deepseek4
+print_info: vocab_only            = 0
+print_info: no_alloc              = 0
+print_info: n_ctx_train           = 1048576
+print_info: n_embd                = 4096
+print_info: n_embd_inp            = 4096
+print_info: n_layer               = 43
+print_info: n_head                = 64
+print_info: n_head_kv             = 1
+print_info: n_rot                 = 64
+print_info: n_swa                 = 128
+print_info: is_swa_any            = 1
+print_info: n_embd_head_k         = 512
+print_info: n_embd_head_v         = 512
+print_info: n_gqa                 = 64
+print_info: n_embd_k_gqa          = 512
+print_info: n_embd_v_gqa          = 512
+print_info: f_norm_eps            = 0.0e+00
+print_info: f_norm_rms_eps        = 1.0e-06
+print_info: f_clamp_kqv           = 0.0e+00
+print_info: f_max_alibi_bias      = 0.0e+00
+print_info: f_logit_scale         = 0.0e+00
+print_info: f_attn_scale          = 0.0e+00
+print_info: n_ff                  = 0
+print_info: n_expert              = 256
+print_info: n_expert_used         = 6
+print_info: n_expert_groups       = 0
+print_info: n_group_used          = 0
+print_info: causal attn           = 1
+print_info: pooling type          = -1
+print_info: rope type             = 0
+print_info: rope scaling          = yarn
+print_info: freq_base_train       = 10000.0
+print_info: freq_scale_train      = 0.0625
+print_info: freq_base_swa         = 10000.0
+print_info: freq_scale_swa        = 0.0625
+print_info: n_embd_head_k_swa     = 512
+print_info: n_embd_head_v_swa     = 512
+print_info: n_rot_swa             = 64
+print_info: n_ctx_orig_yarn       = 65536
+print_info: rope_yarn_log_mul     = 0.0000
+print_info: rope_finetuned        = unknown
+print_info: model type            = ?B
+print_info: model params          = 284.33 B
+print_info: general.name          = DeepSeek V4 Flash
+print_info: n_lora_q              = 1024
+print_info: n_lora_o              = 1024
+print_info: n_attn_out_groups     = 8
+print_info: n_ff_exp              = 2048
+print_info: n_expert_shared       = 1
+print_info: n_swa                 = 128
+print_info: compress_rope_freq_base = 160000.0
+print_info: indexer_n_head        = 64
+print_info: indexer_head_size     = 128
+print_info: indexer_top_k         = 512
+print_info: n_hash_layers         = 3
+print_info: n_hc                  = 4
+print_info: hc_sinkhorn_iters     = 20
+print_info: hc_eps                = 1.0e-06
+print_info: nextn_predict_layers  = 1
+print_info: expert_weights_scale  = 1.5
+print_info: expert_weights_norm   = 1
+print_info: expert_gating_func    = sqrtsoftplus
+print_info: vocab type            = BPE
+print_info: n_vocab               = 129280
+print_info: n_merges              = 127741
+print_info: BOS token             = 0 '<｜begin▁of▁sentence｜>'
+print_info: EOS token             = 1 '<｜end▁of▁sentence｜>'
+print_info: EOT token             = 1 '<｜end▁of▁sentence｜>'
+print_info: PAD token             = 1 '<｜end▁of▁sentence｜>'
+print_info: LF token              = 201 'Ċ'
+print_info: FIM PRE token         = 128801 '<｜fim▁begin｜>'
+print_info: FIM SUF token         = 128800 '<｜fim▁hole｜>'
+print_info: FIM MID token         = 128802 '<｜fim▁end｜>'
+print_info: EOG token             = 1 '<｜end▁of▁sentence｜>'
+print_info: max token length      = 256
+load_tensors: loading model tensors, this can take a while... (mmap = true, direct_io = false)
+load_tensors: offloading output layer to GPU
+load_tensors: offloading 42 repeating layers to GPU
+load_tensors: offloaded 44/44 layers to GPU
+load_tensors:   CPU_Mapped model buffer size =   536.56 MiB
+load_tensors:        ROCm0 model buffer size = 20472.57 MiB
+load_tensors:        ROCm1 model buffer size = 17080.39 MiB
+load_tensors:        ROCm2 model buffer size = 20487.41 MiB
+load_tensors:        ROCm3 model buffer size = 17065.31 MiB
+load_tensors:        ROCm4 model buffer size = 20487.41 MiB
+load_tensors:        ROCm5 model buffer size = 17080.39 MiB
+load_tensors:        ROCm6 model buffer size = 20487.41 MiB
+load_tensors:        ROCm7 model buffer size = 14194.92 MiB
+....................................................................................................
+common_init_result: added <｜end▁of▁sentence｜> logit bias = -inf
+llama_context: constructing llama_context
+llama_context: n_seq_max     = 1
+llama_context: n_ctx         = 65536
+llama_context: n_ctx_seq     = 65536
+llama_context: n_batch       = 512
+llama_context: n_ubatch      = 256
+llama_context: causal_attn   = 1
+llama_context: flash_attn    = enabled
+llama_context: kv_unified    = false
+llama_context: freq_base     = 10000.0
+llama_context: freq_scale    = 0.0625
+llama_context: n_ctx_seq (65536) < n_ctx_train (1048576) -- the full capacity of the model will not be utilized
+llama_context:  ROCm_Host  output buffer size =     0.49 MiB
+llama_kv_cache_iswa: creating non-SWA KV cache, size = 65536 cells
+llama_kv_cache: size =    0.00 MiB ( 65536 cells,   0 layers,  1/1 seqs), K (f16):    0.00 MiB, V (f16):    0.00 MiB
+llama_kv_cache: attn_rot_k = 0, n_embd_head_k_all = 0
+llama_kv_cache: attn_rot_v = 0, n_embd_head_k_all = 0
+llama_kv_cache_iswa: creating     SWA KV cache, size = 512 cells
+llama_kv_cache:      ROCm0 KV buffer size =     3.00 MiB
+llama_kv_cache:      ROCm1 KV buffer size =     2.50 MiB
+llama_kv_cache:      ROCm2 KV buffer size =     3.00 MiB
+llama_kv_cache:      ROCm3 KV buffer size =     2.50 MiB
+llama_kv_cache:      ROCm4 KV buffer size =     3.00 MiB
+llama_kv_cache:      ROCm5 KV buffer size =     2.50 MiB
+llama_kv_cache:      ROCm6 KV buffer size =     3.00 MiB
+llama_kv_cache:      ROCm7 KV buffer size =     2.00 MiB
+llama_kv_cache: size =   21.50 MiB (   512 cells,  43 layers,  1/1 seqs), K (f16):   21.50 MiB, V (f16):    0.00 MiB
+llama_kv_cache: attn_rot_k = 0, n_embd_head_k_all = 512
+llama_kv_cache: attn_rot_v = 0, n_embd_head_k_all = 512
+llama_memory_recurrent:      ROCm0 RS buffer size =     2.00 MiB
+llama_memory_recurrent:      ROCm1 RS buffer size =     2.50 MiB
+llama_memory_recurrent:      ROCm2 RS buffer size =     3.00 MiB
+llama_memory_recurrent:      ROCm3 RS buffer size =     2.50 MiB
+llama_memory_recurrent:      ROCm4 RS buffer size =     3.00 MiB
+llama_memory_recurrent:      ROCm5 RS buffer size =     2.50 MiB
+llama_memory_recurrent:      ROCm6 RS buffer size =     3.00 MiB
+llama_memory_recurrent:      ROCm7 RS buffer size =     2.00 MiB
+llama_memory_recurrent: size =   20.50 MiB (     1 cells,  43 layers,  1 seqs), R (f32):   10.25 MiB, S (f32):   10.25 MiB
+llama_memory_hybrid_iswa:      ROCm0 DeepSeek4 compressed KV buffer size =    41.00 MiB
+llama_memory_hybrid_iswa:      ROCm1 DeepSeek4 compressed KV buffer size =    61.00 MiB
+llama_memory_hybrid_iswa:      ROCm2 DeepSeek4 compressed KV buffer size =    61.50 MiB
+llama_memory_hybrid_iswa:      ROCm3 DeepSeek4 compressed KV buffer size =    41.50 MiB
+llama_memory_hybrid_iswa:      ROCm4 DeepSeek4 compressed KV buffer size =    61.50 MiB
+llama_memory_hybrid_iswa:      ROCm5 DeepSeek4 compressed KV buffer size =    61.00 MiB
+llama_memory_hybrid_iswa:      ROCm6 DeepSeek4 compressed KV buffer size =    61.50 MiB
+llama_memory_hybrid_iswa:      ROCm7 DeepSeek4 compressed KV buffer size =    41.00 MiB
+llama_context: pipeline parallelism enabled
+sched_reserve: reserving ...
+sched_reserve: resolving fused Gated Delta Net support:
+sched_reserve: fused Gated Delta Net (autoregressive) enabled
+sched_reserve: fused Gated Delta Net (chunked) enabled
+sched_reserve:      ROCm0 compute buffer size =  2167.72 MiB
+sched_reserve:      ROCm1 compute buffer size =  1705.06 MiB
+sched_reserve:      ROCm2 compute buffer size =  1996.95 MiB
+sched_reserve:      ROCm3 compute buffer size =  1669.75 MiB
+sched_reserve:      ROCm4 compute buffer size =  1996.95 MiB
+sched_reserve:      ROCm5 compute buffer size =  1705.06 MiB
+sched_reserve:      ROCm6 compute buffer size =  1996.95 MiB
+sched_reserve:      ROCm7 compute buffer size =  1452.89 MiB
+sched_reserve:  ROCm_Host compute buffer size =  8540.13 MiB
+sched_reserve: graph nodes  = 207648 (with bs=256), 6239 (with bs=1)
+sched_reserve: graph splits = 6451 (with bs=256), 699 (with bs=1)
+sched_reserve: reserve took 5322.76 ms, sched copies = 4
+srv    load_model: initializing slots, n_slots = 1
+common_context_can_seq_rm: the target context does not support partial sequence removal
+srv    load_model: speculative decoding will use checkpoints
+no implementations specified for speculative decoding
+slot   load_model: id  0 | task -1 | new slot, n_ctx = 65536
+srv    load_model: prompt cache is enabled, size limit: 8192 MiB
+srv    load_model: use `--cache-ram 0` to disable the prompt cache
+srv    load_model: for more info see https://github.com/ggml-org/llama.cpp/pull/16391
+srv          init: init: --cache-idle-slots requires --kv-unified, disabling
+init: chat template, example_format: '<|im_start|>system
+You are a helpful assistant<|im_end|>
+<|im_start|>user
+Hello<|im_end|>
+<|im_start|>assistant
+Hi there<|im_end|>
+<|im_start|>user
+How are you?<|im_end|>
+<|im_start|>assistant
+'
+srv          init: init: chat template, thinking = 0
+main: model loaded
+main: server is listening on http://0.0.0.0:8080
+main: starting the main loop...
+srv  update_slots: all slots are idle
+srv  params_from_: Chat format: peg-native
+slot get_availabl: id  0 | task -1 | selected slot by LRU, t_last = -1
+srv  get_availabl: updating prompt cache
+srv          load:  - looking for better prompt, base f_keep = -1.000, sim = 0.000
+srv        update:  - cache state: 0 prompts, 0.000 MiB (limits: 8192.000 MiB, 65536 tokens, 8589934592 est)
+srv  get_availabl: prompt cache update took 0.01 ms
+slot launch_slot_: id  0 | task -1 | sampler chain: logits -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> ?top-p -> min-p -> ?xtc -> temp-ext -> dist 
+slot launch_slot_: id  0 | task 0 | processing task, is_child = 0
+slot update_slots: id  0 | task 0 | new prompt, n_ctx_slot = 65536, n_keep = 0, task.n_tokens = 39
+slot update_slots: id  0 | task 0 | n_tokens = 0, memory_seq_rm [0, end)
+slot update_slots: id  0 | task 0 | prompt processing progress, n_tokens = 35, batch.n_tokens = 35, progress = 0.897436
+slot update_slots: id  0 | task 0 | n_tokens = 35, memory_seq_rm [35, end)
+slot init_sampler: id  0 | task 0 | init sampler, took 0.02 ms, tokens: text = 39, total = 39
+slot update_slots: id  0 | task 0 | prompt processing done, n_tokens = 39, batch.n_tokens = 4
+slot print_timing: id  0 | task 0 | 
+prompt eval time =    2987.66 ms /    39 tokens (   76.61 ms per token,    13.05 tokens per second)
+       eval time =    3381.37 ms /    32 tokens (  105.67 ms per token,     9.46 tokens per second)
+      total time =    6369.03 ms /    71 tokens
+slot      release: id  0 | task 0 | stop processing: n_tokens = 70, truncated = 0
+srv  update_slots: all slots are idle
+srv  log_server_r: done request: POST /v1/chat/completions 127.0.0.1 200
+srv    operator(): operator(): cleaning up before exit...

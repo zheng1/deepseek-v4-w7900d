@@ -1,0 +1,89 @@
+[New LWP 3654976]
+[New LWP 3654975]
+[New LWP 3654974]
+[New LWP 3654973]
+[New LWP 3654972]
+[New LWP 3654971]
+[New LWP 3654970]
+[New LWP 3654969]
+[New LWP 3654968]
+[New LWP 3654967]
+[New LWP 3654966]
+[New LWP 3654965]
+[New LWP 3654964]
+[New LWP 3654963]
+[New LWP 3654962]
+[New LWP 3654961]
+[New LWP 3654960]
+[New LWP 3654959]
+[New LWP 3654958]
+[New LWP 3654957]
+[New LWP 3654956]
+[New LWP 3654955]
+[New LWP 3654954]
+[New LWP 3654953]
+[New LWP 3654952]
+[New LWP 3654951]
+[New LWP 3654950]
+[New LWP 3654949]
+[New LWP 3654948]
+[New LWP 3654947]
+[New LWP 3654946]
+[New LWP 3654945]
+[New LWP 3654944]
+[New LWP 3654943]
+[New LWP 3654942]
+[New LWP 3654941]
+[New LWP 3654940]
+[New LWP 3654939]
+[New LWP 3654938]
+[New LWP 3654937]
+[New LWP 3654936]
+[New LWP 3654935]
+[New LWP 3654934]
+[New LWP 3654933]
+[New LWP 3654932]
+[New LWP 3654931]
+[New LWP 3654930]
+[New LWP 3654929]
+[New LWP 3654928]
+[New LWP 3654927]
+[New LWP 3654926]
+[New LWP 3654925]
+[New LWP 3654924]
+[New LWP 3654923]
+[New LWP 3654922]
+[New LWP 3654921]
+[New LWP 3654920]
+[New LWP 3654919]
+[New LWP 3654918]
+[New LWP 3654917]
+[New LWP 3654916]
+[New LWP 3654915]
+[New LWP 3654914]
+[New LWP 3654893]
+[New LWP 3654873]
+
+This GDB supports auto-downloading debuginfo from the following URLs:
+  <https://debuginfod.ubuntu.com>
+Enable debuginfod for this session? (y or [n]) [answered N; input not from terminal]
+Debuginfod has been disabled.
+To make this setting permanent, add 'set debuginfod enabled off' to .gdbinit.
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+0x0000733d89910813 in __GI___wait4 (pid=3654978, stat_loc=0x0, options=0, usage=0x0) at ../sysdeps/unix/sysv/linux/wait4.c:30
+#0  0x0000733d89910813 in __GI___wait4 (pid=3654978, stat_loc=0x0, options=0, usage=0x0) at ../sysdeps/unix/sysv/linux/wait4.c:30
+30	in ../sysdeps/unix/sysv/linux/wait4.c
+#1  0x0000733d8a357273 in ggml_print_backtrace () from /root/bati.cpp/build-hip/bin/libggml-base.so.0
+#2  0x0000733d8a35741b in ggml_abort () from /root/bati.cpp/build-hip/bin/libggml-base.so.0
+#3  0x0000733d88e4c004 in ggml_cuda_op_concat(ggml_backend_cuda_context&, ggml_tensor*) () from /root/bati.cpp/build-hip/bin/libggml-hip.so.0
+#4  0x0000733d88ea6490 in ggml_cuda_graph_evaluate_and_capture(ggml_backend_cuda_context*, ggml_cgraph*, bool, bool, void const*) () from /root/bati.cpp/build-hip/bin/libggml-hip.so.0
+#5  0x0000733d88ea329c in ggml_backend_cuda_graph_compute(ggml_backend*, ggml_cgraph*) () from /root/bati.cpp/build-hip/bin/libggml-hip.so.0
+#6  0x0000733d8a3753e7 in ggml_backend_sched_graph_compute_async () from /root/bati.cpp/build-hip/bin/libggml-base.so.0
+#7  0x0000733d8a0b4c01 in llama_context::graph_compute(ggml_cgraph*, bool) () from /root/bati.cpp/build-hip/bin/libllama.so.0
+#8  0x0000733d8a0b6d54 in llama_context::process_ubatch(llama_ubatch const&, llm_graph_type, llama_memory_context_i*, ggml_status&) () from /root/bati.cpp/build-hip/bin/libllama.so.0
+#9  0x0000733d8a0be2f0 in llama_context::decode(llama_batch const&) () from /root/bati.cpp/build-hip/bin/libllama.so.0
+#10 0x0000733d8a0bfdbf in llama_decode () from /root/bati.cpp/build-hip/bin/libllama.so.0
+#11 0x00005b738c878681 in test_prompt(llama_context*, int, int, int) ()
+#12 0x00005b738c873b8f in main ()
+[Inferior 1 (process 3654870) detached]

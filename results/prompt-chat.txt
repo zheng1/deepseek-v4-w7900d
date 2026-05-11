@@ -1,0 +1,1 @@
+<｜begin▁of▁sentence｜>You are a helpful assistant.<｜User｜>只输出这四个字：运行成功<｜Assistant｜></think>

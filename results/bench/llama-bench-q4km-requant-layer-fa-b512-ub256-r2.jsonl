@@ -1,0 +1,87 @@
+{"build_commit": "c7b64fe06", "build_number": 8933, "cpu_info": "AMD EPYC 9334 32-Core Processor", "gpu_info": "AMD Radeon PRO W7900D, AMD Radeon PRO W7900D, AMD Radeon PRO W7900D, AMD Radeon PRO W7900D, AMD Radeon PRO W7900D, AMD Radeon PRO W7900D, AMD Radeon PRO W7900D, AMD Radeon PRO W7900D", "backends": "ROCm", "model_filename": "/data/models/deepseek-v4-gguf/DeepSeek-V4-Flash-Q4_K_M-requant-from-Q8_0.gguf", "model_type": "deepseek4 ?B Q4_K - Medium", "model_size": 171911318940, "model_n_params": 284334567511, "n_batch": 512, "n_ubatch": 256, "n_threads": 64, "cpu_mask": "0x0", "cpu_strict": false, "poll": 50, "type_k": "f16", "type_v": "f16", "n_gpu_layers": 99, "n_cpu_moe": 0, "split_mode": "layer", "main_gpu": 0, "no_kv_offload": false, "flash_attn": true, "devices": "auto", "tensor_split": "0.00", "tensor_buft_overrides": "none", "use_mmap": true, "use_direct_io": false, "embeddings": false, "no_op_offload": 1, "no_host": false, "fit_target": 0, "fit_min_ctx": 0, "n_prompt": 64, "n_gen": 0, "n_depth": 0, "test_time": "2026-05-08T22:59:13Z", "avg_ns": 721218883, "stddev_ns": 9989943, "avg_ts": 88.747177, "stddev_ts": 1.229279, "samples_ns": [ 728282840, 714154926 ],"samples_ts": [ 87.8779, 89.6164 ]}
+[New LWP 3636089]
+[New LWP 3636088]
+[New LWP 3636087]
+[New LWP 3636086]
+[New LWP 3636085]
+[New LWP 3636084]
+[New LWP 3636083]
+[New LWP 3636082]
+[New LWP 3636081]
+[New LWP 3636080]
+[New LWP 3636079]
+[New LWP 3636078]
+[New LWP 3636077]
+[New LWP 3636076]
+[New LWP 3636075]
+[New LWP 3636074]
+[New LWP 3636073]
+[New LWP 3636072]
+[New LWP 3636071]
+[New LWP 3636070]
+[New LWP 3636069]
+[New LWP 3636068]
+[New LWP 3636067]
+[New LWP 3636066]
+[New LWP 3636065]
+[New LWP 3636064]
+[New LWP 3636063]
+[New LWP 3636062]
+[New LWP 3636061]
+[New LWP 3636060]
+[New LWP 3636059]
+[New LWP 3636058]
+[New LWP 3636057]
+[New LWP 3636056]
+[New LWP 3636055]
+[New LWP 3636054]
+[New LWP 3636053]
+[New LWP 3636052]
+[New LWP 3636051]
+[New LWP 3636050]
+[New LWP 3636049]
+[New LWP 3636048]
+[New LWP 3636047]
+[New LWP 3636046]
+[New LWP 3636045]
+[New LWP 3636044]
+[New LWP 3636043]
+[New LWP 3636042]
+[New LWP 3636041]
+[New LWP 3636040]
+[New LWP 3636039]
+[New LWP 3636038]
+[New LWP 3636037]
+[New LWP 3636036]
+[New LWP 3636035]
+[New LWP 3636034]
+[New LWP 3636033]
+[New LWP 3636032]
+[New LWP 3636031]
+[New LWP 3636030]
+[New LWP 3636029]
+[New LWP 3636028]
+[New LWP 3636027]
+[New LWP 3635983]
+[New LWP 3635965]
+
+This GDB supports auto-downloading debuginfo from the following URLs:
+  <https://debuginfod.ubuntu.com>
+Enable debuginfod for this session? (y or [n]) [answered N; input not from terminal]
+Debuginfod has been disabled.
+To make this setting permanent, add 'set debuginfod enabled off' to .gdbinit.
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+0x00007b9858310813 in __GI___wait4 (pid=3636091, stat_loc=0x0, options=0, usage=0x0) at ../sysdeps/unix/sysv/linux/wait4.c:30
+#0  0x00007b9858310813 in __GI___wait4 (pid=3636091, stat_loc=0x0, options=0, usage=0x0) at ../sysdeps/unix/sysv/linux/wait4.c:30
+30	in ../sysdeps/unix/sysv/linux/wait4.c
+#1  0x00007b98592cc273 in ggml_print_backtrace () from /root/bati.cpp/build-hip/bin/libggml-base.so.0
+#2  0x00007b98592cc41b in ggml_abort () from /root/bati.cpp/build-hip/bin/libggml-base.so.0
+#3  0x00007b9858c18b4a in llm_build_deepseek4::llm_build_deepseek4(llama_model const&, llm_graph_params const&) () from /root/bati.cpp/build-hip/bin/libllama.so.0
+#4  0x00007b9858b3f5fb in llama_model::build_graph(llm_graph_params const&) const () from /root/bati.cpp/build-hip/bin/libllama.so.0
+#5  0x00007b9858ab7ef3 in llama_context::graph_reserve(unsigned int, unsigned int, unsigned int, llama_memory_context_i const*, bool, unsigned long*, int) () from /root/bati.cpp/build-hip/bin/libllama.so.0
+#6  0x00007b9858ab8ef3 in llama_context::sched_reserve() () from /root/bati.cpp/build-hip/bin/libllama.so.0
+#7  0x00007b9858abd0c9 in llama_context::llama_context(llama_model const&, llama_context_params) () from /root/bati.cpp/build-hip/bin/libllama.so.0
+#8  0x00007b9858abdc48 in llama_init_from_model () from /root/bati.cpp/build-hip/bin/libllama.so.0
+#9  0x00005fe133896444 in main ()
+[Inferior 1 (process 3635962) detached]

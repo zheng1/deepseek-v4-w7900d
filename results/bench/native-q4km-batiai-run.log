@@ -1,0 +1,25 @@
+{"build_commit": "c7b64fe06", "build_number": 8933, "cpu_info": "AMD EPYC 9334 32-Core Processor", "gpu_info": "AMD Radeon PRO W7900D, AMD Radeon PRO W7900D, AMD Radeon PRO W7900D, AMD Radeon PRO W7900D, AMD Radeon PRO W7900D, AMD Radeon PRO W7900D, AMD Radeon PRO W7900D, AMD Radeon PRO W7900D", "backends": "ROCm", "model_filename": "/data/models/deepseek-v4-native-gguf/batiai-q4km/deepseek-ai-DeepSeek-V4-Flash-Q4_K_M-00001-of-00004.gguf", "model_type": "deepseek4 ?B Q4_K - Medium", "model_size": 171911318940, "model_n_params": 284334567511, "n_batch": 512, "n_ubatch": 256, "n_threads": 64, "cpu_mask": "0x0", "cpu_strict": false, "poll": 50, "type_k": "f16", "type_v": "f16", "n_gpu_layers": 99, "n_cpu_moe": 0, "split_mode": "layer", "main_gpu": 0, "no_kv_offload": false, "flash_attn": true, "devices": "auto", "tensor_split": "0.00", "tensor_buft_overrides": "none", "use_mmap": true, "use_direct_io": false, "embeddings": false, "no_op_offload": 1, "no_host": false, "fit_target": 0, "fit_min_ctx": 0, "n_prompt": 512, "n_gen": 0, "n_depth": 0, "test_time": "2026-05-09T10:31:59Z", "avg_ns": 5420276491, "stddev_ns": 127537425, "avg_ts": 94.486282, "stddev_ts": 2.223232, "samples_ns": [ 5510459040, 5330093943 ],"samples_ts": [ 92.9142, 96.0583 ]}
+{"build_commit": "c7b64fe06", "build_number": 8933, "cpu_info": "AMD EPYC 9334 32-Core Processor", "gpu_info": "AMD Radeon PRO W7900D, AMD Radeon PRO W7900D, AMD Radeon PRO W7900D, AMD Radeon PRO W7900D, AMD Radeon PRO W7900D, AMD Radeon PRO W7900D, AMD Radeon PRO W7900D, AMD Radeon PRO W7900D", "backends": "ROCm", "model_filename": "/data/models/deepseek-v4-native-gguf/batiai-q4km/deepseek-ai-DeepSeek-V4-Flash-Q4_K_M-00001-of-00004.gguf", "model_type": "deepseek4 ?B Q4_K - Medium", "model_size": 171911318940, "model_n_params": 284334567511, "n_batch": 512, "n_ubatch": 256, "n_threads": 64, "cpu_mask": "0x0", "cpu_strict": false, "poll": 50, "type_k": "f16", "type_v": "f16", "n_gpu_layers": 99, "n_cpu_moe": 0, "split_mode": "layer", "main_gpu": 0, "no_kv_offload": false, "flash_attn": true, "devices": "auto", "tensor_split": "0.00", "tensor_buft_overrides": "none", "use_mmap": true, "use_direct_io": false, "embeddings": false, "no_op_offload": 1, "no_host": false, "fit_target": 0, "fit_min_ctx": 0, "n_prompt": 0, "n_gen": 64, "n_depth": 0, "test_time": "2026-05-09T10:32:19Z", "avg_ns": 7305289369, "stddev_ns": 16953914, "avg_ts": 8.760799, "stddev_ts": 0.020331, "samples_ns": [ 7317277293, 7293301446 ],"samples_ts": [ 8.74642, 8.77518 ]}
+	Command being timed: "/root/deepseek-v4-w7900d/scripts/bench_gguf_standard.sh"
+	User time (seconds): 1558.71
+	System time (seconds): 85.48
+	Percent of CPU this job got: 1197%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:17.25
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 169414432
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 6
+	Minor (reclaiming a frame) page faults: 9165041
+	Voluntary context switches: 88260
+	Involuntary context switches: 8306
+	Swaps: 0
+	File system inputs: 224
+	File system outputs: 487592
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

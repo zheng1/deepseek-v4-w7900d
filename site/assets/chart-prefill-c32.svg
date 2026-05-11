@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="604" viewBox="0 0 1200 604" role="img" aria-label="Prefill 压测：1024 input / 1 output">
+  <rect width="100%" height="100%" fill="#fffdf7"/>
+  <text x="60" y="58" font-size="34" font-weight="850" fill="#202124">Prefill 压测：1024 input / 1 output</text>
+  <text x="60" y="88" font-size="17" fill="#62665f">ctx 128K，vLLM bench serve；后端 -np 1，所以并发主要压出队列和持续吞吐</text>
+  
+    <g transform="translate(0,0)">
+      <rect x="46" y="120" width="1108" height="196" rx="12" fill="#fffefa" stroke="#d9d5c8"/>
+      <text x="70" y="154" font-size="25" font-weight="800" fill="#202124">Total token throughput</text>
+      <text x="70" y="182" font-size="16" fill="#62665f">总 token 吞吐，基本就是 prefill 吞吐，越高越好</text>
+      <line x1="443.5" y1="196" x2="443.5" y2="284" stroke="#ebe6d9" stroke-width="1"/><line x1="631" y1="196" x2="631" y2="284" stroke="#ebe6d9" stroke-width="1"/><line x1="818.5" y1="196" x2="818.5" y2="284" stroke="#ebe6d9" stroke-width="1"/><line x1="1006" y1="196" x2="1006" y2="284" stroke="#ebe6d9" stroke-width="1"/>
+      
+      <g>
+        <circle cx="78" cy="220" r="5" fill="#0d6f68"/>
+        <text x="90" y="225" font-size="17" fill="#202124">c32 / n100</text>
+        <rect x="256" y="206" width="750" height="26" rx="5" fill="#f0ecdf"/>
+        <rect x="256" y="206" width="750" height="26" rx="5" fill="#0d6f68"/>
+        <text x="1022" y="225" font-size="17" font-weight="700" fill="#202124">76.44 tok/s</text>
+      </g>
+      <g>
+        <circle cx="78" cy="264" r="5" fill="#284e7a"/>
+        <text x="90" y="269" font-size="17" fill="#202124">c1 / n10</text>
+        <rect x="256" y="250" width="750" height="26" rx="5" fill="#f0ecdf"/>
+        <rect x="256" y="250" width="711.0478806907379" height="26" rx="5" fill="#284e7a"/>
+        <text x="1022" y="269" font-size="17" font-weight="700" fill="#202124">72.47 tok/s</text>
+      </g>
+    </g>
+    <g transform="translate(0,0)">
+      <rect x="46" y="344" width="1108" height="196" rx="12" fill="#fffefa" stroke="#d9d5c8"/>
+      <text x="70" y="378" font-size="25" font-weight="800" fill="#202124">Mean TTFT</text>
+      <text x="70" y="406" font-size="16" fill="#62665f">首 token 延迟，并发 32 时主要是排队时间，越短越好</text>
+      <line x1="443.5" y1="420" x2="443.5" y2="508" stroke="#ebe6d9" stroke-width="1"/><line x1="631" y1="420" x2="631" y2="508" stroke="#ebe6d9" stroke-width="1"/><line x1="818.5" y1="420" x2="818.5" y2="508" stroke="#ebe6d9" stroke-width="1"/><line x1="1006" y1="420" x2="1006" y2="508" stroke="#ebe6d9" stroke-width="1"/>
+      
+      <g>
+        <circle cx="78" cy="444" r="5" fill="#284e7a"/>
+        <text x="90" y="449" font-size="17" fill="#202124">c1 / n10</text>
+        <rect x="256" y="430" width="750" height="26" rx="5" fill="#f0ecdf"/>
+        <rect x="256" y="430" width="29.338534318200676" height="26" rx="5" fill="#284e7a"/>
+        <text x="1022" y="449" font-size="17" font-weight="700" fill="#202124">14.14s</text>
+      </g>
+      <g>
+        <circle cx="78" cy="488" r="5" fill="#0d6f68"/>
+        <text x="90" y="493" font-size="17" fill="#202124">c32 / n100</text>
+        <rect x="256" y="474" width="750" height="26" rx="5" fill="#f0ecdf"/>
+        <rect x="256" y="474" width="750" height="26" rx="5" fill="#0d6f68"/>
+        <text x="1022" y="493" font-size="17" font-weight="700" fill="#202124">361.47s</text>
+      </g>
+    </g>
+</svg>

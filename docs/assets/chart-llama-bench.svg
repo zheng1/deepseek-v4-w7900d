@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="868" viewBox="0 0 1200 868" role="img" aria-label="llama-bench：prefill 和 decode">
+  <rect width="100%" height="100%" fill="#fffdf7"/>
+  <text x="60" y="58" font-size="34" font-weight="850" fill="#202124">llama-bench：prefill 和 decode</text>
+  <text x="60" y="88" font-size="17" fill="#62665f">统一参数：layer split / batch 512 / ubatch 256 / f16 KV cache</text>
+  
+    <g transform="translate(0,0)">
+      <rect x="46" y="120" width="1108" height="328" rx="12" fill="#fffefa" stroke="#d9d5c8"/>
+      <text x="70" y="154" font-size="25" font-weight="800" fill="#202124">Prefill p512</text>
+      <text x="70" y="182" font-size="16" fill="#62665f">一次吃 512 token prompt，越高越好</text>
+      <line x1="443.5" y1="196" x2="443.5" y2="416" stroke="#ebe6d9" stroke-width="1"/><line x1="631" y1="196" x2="631" y2="416" stroke="#ebe6d9" stroke-width="1"/><line x1="818.5" y1="196" x2="818.5" y2="416" stroke="#ebe6d9" stroke-width="1"/><line x1="1006" y1="196" x2="1006" y2="416" stroke="#ebe6d9" stroke-width="1"/>
+      
+      <g>
+        <circle cx="78" cy="220" r="5" fill="#0d6f68"/>
+        <text x="90" y="225" font-size="17" fill="#202124">MXFP4_MOE</text>
+        <rect x="256" y="206" width="750" height="26" rx="5" fill="#f0ecdf"/>
+        <rect x="256" y="206" width="750" height="26" rx="5" fill="#0d6f68"/>
+        <text x="1022" y="225" font-size="17" font-weight="700" fill="#202124">118.04 tok/s</text>
+      </g>
+      <g>
+        <circle cx="78" cy="264" r="5" fill="#284e7a"/>
+        <text x="90" y="269" font-size="17" fill="#202124">Q8_0</text>
+        <rect x="256" y="250" width="750" height="26" rx="5" fill="#f0ecdf"/>
+        <rect x="256" y="250" width="734.8780074550999" height="26" rx="5" fill="#284e7a"/>
+        <text x="1022" y="269" font-size="17" font-weight="700" fill="#202124">115.66 tok/s</text>
+      </g>
+      <g>
+        <circle cx="78" cy="308" r="5" fill="#b1841f"/>
+        <text x="90" y="313" font-size="17" fill="#202124">Q2_K</text>
+        <rect x="256" y="294" width="750" height="26" rx="5" fill="#f0ecdf"/>
+        <rect x="256" y="294" width="652.4695018637749" height="26" rx="5" fill="#b1841f"/>
+        <text x="1022" y="313" font-size="17" font-weight="700" fill="#202124">102.69 tok/s</text>
+      </g>
+      <g>
+        <circle cx="78" cy="352" r="5" fill="#6f5b2e"/>
+        <text x="90" y="357" font-size="17" fill="#202124">Q3_K_M</text>
+        <rect x="256" y="338" width="750" height="26" rx="5" fill="#f0ecdf"/>
+        <rect x="256" y="338" width="604.7526262283972" height="26" rx="5" fill="#6f5b2e"/>
+        <text x="1022" y="357" font-size="17" font-weight="700" fill="#202124">95.18 tok/s</text>
+      </g>
+      <g>
+        <circle cx="78" cy="396" r="5" fill="#ad4f2f"/>
+        <text x="90" y="401" font-size="17" fill="#202124">native Q4_K_M</text>
+        <rect x="256" y="382" width="750" height="26" rx="5" fill="#f0ecdf"/>
+        <rect x="256" y="382" width="600.3685191460521" height="26" rx="5" fill="#ad4f2f"/>
+        <text x="1022" y="401" font-size="17" font-weight="700" fill="#202124">94.49 tok/s</text>
+      </g>
+    </g>
+    <g transform="translate(0,0)">
+      <rect x="46" y="476" width="1108" height="328" rx="12" fill="#fffefa" stroke="#d9d5c8"/>
+      <text x="70" y="510" font-size="25" font-weight="800" fill="#202124">Decode n64</text>
+      <text x="70" y="538" font-size="16" fill="#62665f">连续生成 64 token，越高越好</text>
+      <line x1="443.5" y1="552" x2="443.5" y2="772" stroke="#ebe6d9" stroke-width="1"/><line x1="631" y1="552" x2="631" y2="772" stroke="#ebe6d9" stroke-width="1"/><line x1="818.5" y1="552" x2="818.5" y2="772" stroke="#ebe6d9" stroke-width="1"/><line x1="1006" y1="552" x2="1006" y2="772" stroke="#ebe6d9" stroke-width="1"/>
+      
+      <g>
+        <circle cx="78" cy="576" r="5" fill="#0d6f68"/>
+        <text x="90" y="581" font-size="17" fill="#202124">MXFP4_MOE</text>
+        <rect x="256" y="562" width="750" height="26" rx="5" fill="#f0ecdf"/>
+        <rect x="256" y="562" width="750" height="26" rx="5" fill="#0d6f68"/>
+        <text x="1022" y="581" font-size="17" font-weight="700" fill="#202124">9.52 tok/s</text>
+      </g>
+      <g>
+        <circle cx="78" cy="620" r="5" fill="#284e7a"/>
+        <text x="90" y="625" font-size="17" fill="#202124">Q8_0</text>
+        <rect x="256" y="606" width="750" height="26" rx="5" fill="#f0ecdf"/>
+        <rect x="256" y="606" width="726.3655462184875" height="26" rx="5" fill="#284e7a"/>
+        <text x="1022" y="625" font-size="17" font-weight="700" fill="#202124">9.22 tok/s</text>
+      </g>
+      <g>
+        <circle cx="78" cy="664" r="5" fill="#b1841f"/>
+        <text x="90" y="669" font-size="17" fill="#202124">Q2_K</text>
+        <rect x="256" y="650" width="750" height="26" rx="5" fill="#f0ecdf"/>
+        <rect x="256" y="650" width="718.4873949579832" height="26" rx="5" fill="#b1841f"/>
+        <text x="1022" y="669" font-size="17" font-weight="700" fill="#202124">9.12 tok/s</text>
+      </g>
+      <g>
+        <circle cx="78" cy="708" r="5" fill="#6f5b2e"/>
+        <text x="90" y="713" font-size="17" fill="#202124">Q3_K_M</text>
+        <rect x="256" y="694" width="750" height="26" rx="5" fill="#f0ecdf"/>
+        <rect x="256" y="694" width="707.4579831932774" height="26" rx="5" fill="#6f5b2e"/>
+        <text x="1022" y="713" font-size="17" font-weight="700" fill="#202124">8.98 tok/s</text>
+      </g>
+      <g>
+        <circle cx="78" cy="752" r="5" fill="#ad4f2f"/>
+        <text x="90" y="757" font-size="17" fill="#202124">native Q4_K_M</text>
+        <rect x="256" y="738" width="750" height="26" rx="5" fill="#f0ecdf"/>
+        <rect x="256" y="738" width="690.1260504201681" height="26" rx="5" fill="#ad4f2f"/>
+        <text x="1022" y="757" font-size="17" font-weight="700" fill="#202124">8.76 tok/s</text>
+      </g>
+    </g>
+</svg>

@@ -1,0 +1,23 @@
+[New LWP 1416322]
+[New LWP 1416301]
+
+This GDB supports auto-downloading debuginfo from the following URLs:
+  <https://debuginfod.ubuntu.com>
+Enable debuginfod for this session? (y or [n]) [answered N; input not from terminal]
+Debuginfod has been disabled.
+To make this setting permanent, add 'set debuginfod enabled off' to .gdbinit.
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+0x000077340a910813 in __GI___wait4 (pid=1416330, stat_loc=0x0, options=0, usage=0x0) at ../sysdeps/unix/sysv/linux/wait4.c:30
+#0  0x000077340a910813 in __GI___wait4 (pid=1416330, stat_loc=0x0, options=0, usage=0x0) at ../sysdeps/unix/sysv/linux/wait4.c:30
+30	in ../sysdeps/unix/sysv/linux/wait4.c
+#1  0x000077340b935273 in ggml_print_backtrace () from /root/bati.cpp/build-hip/bin/libggml-base.so.0
+#2  0x000077340b93541b in ggml_abort () from /root/bati.cpp/build-hip/bin/libggml-base.so.0
+#3  0x000077340b94e658 in ggml_backend_sched_backend_id_from_cur(ggml_backend_sched*, ggml_tensor*) () from /root/bati.cpp/build-hip/bin/libggml-base.so.0
+#4  0x000077340b9506df in ggml_backend_sched_split_graph () from /root/bati.cpp/build-hip/bin/libggml-base.so.0
+#5  0x000077340b0b8377 in llama_context::graph_reserve(unsigned int, unsigned int, unsigned int, llama_memory_context_i const*, bool, unsigned long*, int) () from /root/bati.cpp/build-hip/bin/libllama.so.0
+#6  0x000077340b0b94fe in llama_context::sched_reserve() () from /root/bati.cpp/build-hip/bin/libllama.so.0
+#7  0x000077340b0bd0c9 in llama_context::llama_context(llama_model const&, llama_context_params) () from /root/bati.cpp/build-hip/bin/libllama.so.0
+#8  0x000077340b0bdc48 in llama_init_from_model () from /root/bati.cpp/build-hip/bin/libllama.so.0
+#9  0x0000598e2a2fe444 in main ()
+[Inferior 1 (process 1416298) detached]

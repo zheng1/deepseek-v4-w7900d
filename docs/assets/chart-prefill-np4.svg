@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="780" viewBox="0 0 1200 780" role="img" aria-label="Prefill 压测：修复后的 -np 4">
+  <rect width="100%" height="100%" fill="#fffdf7"/>
+  <text x="60" y="58" font-size="34" font-weight="850" fill="#202124">Prefill 压测：修复后的 -np 4</text>
+  <text x="60" y="88" font-size="17" fill="#62665f">1024 input / 1 output，ctx 16K，cache off；并发能稳定跑，但吞吐没有线性增长</text>
+  
+    <g transform="translate(0,0)">
+      <rect x="46" y="120" width="1108" height="284" rx="12" fill="#fffefa" stroke="#d9d5c8"/>
+      <text x="70" y="154" font-size="25" font-weight="800" fill="#202124">Total token throughput</text>
+      <text x="70" y="182" font-size="16" fill="#62665f">总 token 吞吐，基本就是 prefill 吞吐，越高越好</text>
+      <line x1="443.5" y1="196" x2="443.5" y2="372" stroke="#ebe6d9" stroke-width="1"/><line x1="631" y1="196" x2="631" y2="372" stroke="#ebe6d9" stroke-width="1"/><line x1="818.5" y1="196" x2="818.5" y2="372" stroke="#ebe6d9" stroke-width="1"/><line x1="1006" y1="196" x2="1006" y2="372" stroke="#ebe6d9" stroke-width="1"/>
+      
+      <g>
+        <circle cx="78" cy="220" r="5" fill="#0d6f68"/>
+        <text x="90" y="225" font-size="17" fill="#202124">c1 / n8</text>
+        <rect x="256" y="206" width="750" height="26" rx="5" fill="#f0ecdf"/>
+        <rect x="256" y="206" width="750" height="26" rx="5" fill="#0d6f68"/>
+        <text x="1022" y="225" font-size="17" font-weight="700" fill="#202124">86.09 tok/s</text>
+      </g>
+      <g>
+        <circle cx="78" cy="264" r="5" fill="#284e7a"/>
+        <text x="90" y="269" font-size="17" fill="#202124">c2 / n12</text>
+        <rect x="256" y="250" width="750" height="26" rx="5" fill="#f0ecdf"/>
+        <rect x="256" y="250" width="739.7200604019049" height="26" rx="5" fill="#284e7a"/>
+        <text x="1022" y="269" font-size="17" font-weight="700" fill="#202124">84.91 tok/s</text>
+      </g>
+      <g>
+        <circle cx="78" cy="308" r="5" fill="#ad4f2f"/>
+        <text x="90" y="313" font-size="17" fill="#202124">c4 / n16</text>
+        <rect x="256" y="294" width="750" height="26" rx="5" fill="#f0ecdf"/>
+        <rect x="256" y="294" width="713.4975026135439" height="26" rx="5" fill="#ad4f2f"/>
+        <text x="1022" y="313" font-size="17" font-weight="700" fill="#202124">81.9 tok/s</text>
+      </g>
+      <g>
+        <circle cx="78" cy="352" r="5" fill="#ad4f2f"/>
+        <text x="90" y="357" font-size="17" fill="#202124">b2048 c1</text>
+        <rect x="256" y="338" width="750" height="26" rx="5" fill="#f0ecdf"/>
+        <rect x="256" y="338" width="408.14844929724705" height="26" rx="5" fill="#ad4f2f"/>
+        <text x="1022" y="357" font-size="17" font-weight="700" fill="#202124">46.85 tok/s</text>
+      </g>
+    </g>
+    <g transform="translate(0,0)">
+      <rect x="46" y="432" width="1108" height="284" rx="12" fill="#fffefa" stroke="#d9d5c8"/>
+      <text x="70" y="466" font-size="25" font-weight="800" fill="#202124">Mean TTFT</text>
+      <text x="70" y="494" font-size="16" fill="#62665f">首 token 延迟；c4 更高，b2048 是退化参数，越短越好</text>
+      <line x1="443.5" y1="508" x2="443.5" y2="684" stroke="#ebe6d9" stroke-width="1"/><line x1="631" y1="508" x2="631" y2="684" stroke="#ebe6d9" stroke-width="1"/><line x1="818.5" y1="508" x2="818.5" y2="684" stroke="#ebe6d9" stroke-width="1"/><line x1="1006" y1="508" x2="1006" y2="684" stroke="#ebe6d9" stroke-width="1"/>
+      
+      <g>
+        <circle cx="78" cy="532" r="5" fill="#0d6f68"/>
+        <text x="90" y="537" font-size="17" fill="#202124">c1 / n8</text>
+        <rect x="256" y="518" width="750" height="26" rx="5" fill="#f0ecdf"/>
+        <rect x="256" y="518" width="190.90617653344734" height="26" rx="5" fill="#0d6f68"/>
+        <text x="1022" y="537" font-size="17" font-weight="700" fill="#202124">11.91s</text>
+      </g>
+      <g>
+        <circle cx="78" cy="576" r="5" fill="#284e7a"/>
+        <text x="90" y="581" font-size="17" fill="#202124">c2 / n12</text>
+        <rect x="256" y="562" width="750" height="26" rx="5" fill="#f0ecdf"/>
+        <rect x="256" y="562" width="377.003633254969" height="26" rx="5" fill="#284e7a"/>
+        <text x="1022" y="581" font-size="17" font-weight="700" fill="#202124">23.52s</text>
+      </g>
+      <g>
+        <circle cx="78" cy="620" r="5" fill="#ad4f2f"/>
+        <text x="90" y="625" font-size="17" fill="#202124">c4 / n16</text>
+        <rect x="256" y="606" width="750" height="26" rx="5" fill="#f0ecdf"/>
+        <rect x="256" y="606" width="750" height="26" rx="5" fill="#ad4f2f"/>
+        <text x="1022" y="625" font-size="17" font-weight="700" fill="#202124">46.79s</text>
+      </g>
+      <g>
+        <circle cx="78" cy="664" r="5" fill="#ad4f2f"/>
+        <text x="90" y="669" font-size="17" fill="#202124">b2048 c1</text>
+        <rect x="256" y="650" width="750" height="26" rx="5" fill="#f0ecdf"/>
+        <rect x="256" y="650" width="350.7159649497756" height="26" rx="5" fill="#ad4f2f"/>
+        <text x="1022" y="669" font-size="17" font-weight="700" fill="#202124">21.88s</text>
+      </g>
+    </g>
+</svg>

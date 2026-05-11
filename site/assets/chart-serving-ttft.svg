@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1092" viewBox="0 0 1200 1092" role="img" aria-label="vLLM benchmark client：Mean TTFT">
+  <rect width="100%" height="100%" fill="#fffdf7"/>
+  <text x="60" y="58" font-size="34" font-weight="850" fill="#202124">vLLM benchmark client：Mean TTFT</text>
+  <text x="60" y="88" font-size="17" fill="#62665f">首 token 延迟，主要反映 prefill 和排队时间</text>
+  
+    <g transform="translate(0,0)">
+      <rect x="46" y="120" width="1108" height="328" rx="12" fill="#fffefa" stroke="#d9d5c8"/>
+      <text x="70" y="154" font-size="25" font-weight="800" fill="#202124">128 input / 64 output，c1</text>
+      <text x="70" y="182" font-size="16" fill="#62665f">短请求单并发，越短越好</text>
+      <line x1="443.5" y1="196" x2="443.5" y2="416" stroke="#ebe6d9" stroke-width="1"/><line x1="631" y1="196" x2="631" y2="416" stroke="#ebe6d9" stroke-width="1"/><line x1="818.5" y1="196" x2="818.5" y2="416" stroke="#ebe6d9" stroke-width="1"/><line x1="1006" y1="196" x2="1006" y2="416" stroke="#ebe6d9" stroke-width="1"/>
+      
+      <g>
+        <circle cx="78" cy="220" r="5" fill="#284e7a"/>
+        <text x="90" y="225" font-size="17" fill="#202124">Q8_0</text>
+        <rect x="256" y="206" width="750" height="26" rx="5" fill="#f0ecdf"/>
+        <rect x="256" y="206" width="608.009708737864" height="26" rx="5" fill="#284e7a"/>
+        <text x="1022" y="225" font-size="17" font-weight="700" fill="#202124">1.67s</text>
+      </g>
+      <g>
+        <circle cx="78" cy="264" r="5" fill="#0d6f68"/>
+        <text x="90" y="269" font-size="17" fill="#202124">MXFP4_MOE</text>
+        <rect x="256" y="250" width="750" height="26" rx="5" fill="#f0ecdf"/>
+        <rect x="256" y="250" width="644.4174757281553" height="26" rx="5" fill="#0d6f68"/>
+        <text x="1022" y="269" font-size="17" font-weight="700" fill="#202124">1.77s</text>
+      </g>
+      <g>
+        <circle cx="78" cy="308" r="5" fill="#6f5b2e"/>
+        <text x="90" y="313" font-size="17" fill="#202124">Q3_K_M</text>
+        <rect x="256" y="294" width="750" height="26" rx="5" fill="#f0ecdf"/>
+        <rect x="256" y="294" width="742.7184466019418" height="26" rx="5" fill="#6f5b2e"/>
+        <text x="1022" y="313" font-size="17" font-weight="700" fill="#202124">2.04s</text>
+      </g>
+      <g>
+        <circle cx="78" cy="352" r="5" fill="#ad4f2f"/>
+        <text x="90" y="357" font-size="17" fill="#202124">native Q4_K_M</text>
+        <rect x="256" y="338" width="750" height="26" rx="5" fill="#f0ecdf"/>
+        <rect x="256" y="338" width="742.7184466019418" height="26" rx="5" fill="#ad4f2f"/>
+        <text x="1022" y="357" font-size="17" font-weight="700" fill="#202124">2.04s</text>
+      </g>
+      <g>
+        <circle cx="78" cy="396" r="5" fill="#b1841f"/>
+        <text x="90" y="401" font-size="17" fill="#202124">Q2_K</text>
+        <rect x="256" y="382" width="750" height="26" rx="5" fill="#f0ecdf"/>
+        <rect x="256" y="382" width="750" height="26" rx="5" fill="#b1841f"/>
+        <text x="1022" y="401" font-size="17" font-weight="700" fill="#202124">2.06s</text>
+      </g>
+    </g>
+    <g transform="translate(0,0)">
+      <rect x="46" y="476" width="1108" height="284" rx="12" fill="#fffefa" stroke="#d9d5c8"/>
+      <text x="70" y="510" font-size="25" font-weight="800" fill="#202124">1024 input / 128 output，c1</text>
+      <text x="70" y="538" font-size="16" fill="#62665f">中等 prompt 单并发，越短越好</text>
+      <line x1="443.5" y1="552" x2="443.5" y2="728" stroke="#ebe6d9" stroke-width="1"/><line x1="631" y1="552" x2="631" y2="728" stroke="#ebe6d9" stroke-width="1"/><line x1="818.5" y1="552" x2="818.5" y2="728" stroke="#ebe6d9" stroke-width="1"/><line x1="1006" y1="552" x2="1006" y2="728" stroke="#ebe6d9" stroke-width="1"/>
+      
+      <g>
+        <circle cx="78" cy="576" r="5" fill="#0d6f68"/>
+        <text x="90" y="581" font-size="17" fill="#202124">MXFP4_MOE</text>
+        <rect x="256" y="562" width="750" height="26" rx="5" fill="#f0ecdf"/>
+        <rect x="256" y="562" width="599.3367024636765" height="26" rx="5" fill="#0d6f68"/>
+        <text x="1022" y="581" font-size="17" font-weight="700" fill="#202124">12.65s</text>
+      </g>
+      <g>
+        <circle cx="78" cy="620" r="5" fill="#284e7a"/>
+        <text x="90" y="625" font-size="17" fill="#202124">Q8_0</text>
+        <rect x="256" y="606" width="750" height="26" rx="5" fill="#f0ecdf"/>
+        <rect x="256" y="606" width="607.3910296904611" height="26" rx="5" fill="#284e7a"/>
+        <text x="1022" y="625" font-size="17" font-weight="700" fill="#202124">12.82s</text>
+      </g>
+      <g>
+        <circle cx="78" cy="664" r="5" fill="#6f5b2e"/>
+        <text x="90" y="669" font-size="17" fill="#202124">Q3_K_M</text>
+        <rect x="256" y="650" width="750" height="26" rx="5" fill="#f0ecdf"/>
+        <rect x="256" y="650" width="716.3613392293114" height="26" rx="5" fill="#6f5b2e"/>
+        <text x="1022" y="669" font-size="17" font-weight="700" fill="#202124">15.12s</text>
+      </g>
+      <g>
+        <circle cx="78" cy="708" r="5" fill="#ad4f2f"/>
+        <text x="90" y="713" font-size="17" fill="#202124">native Q4_K_M</text>
+        <rect x="256" y="694" width="750" height="26" rx="5" fill="#f0ecdf"/>
+        <rect x="256" y="694" width="750" height="26" rx="5" fill="#ad4f2f"/>
+        <text x="1022" y="713" font-size="17" font-weight="700" fill="#202124">15.83s</text>
+      </g>
+    </g>
+    <g transform="translate(0,0)">
+      <rect x="46" y="788" width="1108" height="240" rx="12" fill="#fffefa" stroke="#d9d5c8"/>
+      <text x="70" y="822" font-size="25" font-weight="800" fill="#202124">4096 input / 64 output，c1</text>
+      <text x="70" y="850" font-size="16" fill="#62665f">4K prompt 单并发，越短越好</text>
+      <line x1="443.5" y1="864" x2="443.5" y2="996" stroke="#ebe6d9" stroke-width="1"/><line x1="631" y1="864" x2="631" y2="996" stroke="#ebe6d9" stroke-width="1"/><line x1="818.5" y1="864" x2="818.5" y2="996" stroke="#ebe6d9" stroke-width="1"/><line x1="1006" y1="864" x2="1006" y2="996" stroke="#ebe6d9" stroke-width="1"/>
+      
+      <g>
+        <circle cx="78" cy="888" r="5" fill="#0d6f68"/>
+        <text x="90" y="893" font-size="17" fill="#202124">MXFP4_MOE</text>
+        <rect x="256" y="874" width="750" height="26" rx="5" fill="#f0ecdf"/>
+        <rect x="256" y="874" width="596.7883467883469" height="26" rx="5" fill="#0d6f68"/>
+        <text x="1022" y="893" font-size="17" font-weight="700" fill="#202124">45.34s</text>
+      </g>
+      <g>
+        <circle cx="78" cy="932" r="5" fill="#284e7a"/>
+        <text x="90" y="937" font-size="17" fill="#202124">Q8_0</text>
+        <rect x="256" y="918" width="750" height="26" rx="5" fill="#f0ecdf"/>
+        <rect x="256" y="918" width="607.3183573183574" height="26" rx="5" fill="#284e7a"/>
+        <text x="1022" y="937" font-size="17" font-weight="700" fill="#202124">46.14s</text>
+      </g>
+      <g>
+        <circle cx="78" cy="976" r="5" fill="#ad4f2f"/>
+        <text x="90" y="981" font-size="17" fill="#202124">native Q4_K_M</text>
+        <rect x="256" y="962" width="750" height="26" rx="5" fill="#f0ecdf"/>
+        <rect x="256" y="962" width="750" height="26" rx="5" fill="#ad4f2f"/>
+        <text x="1022" y="981" font-size="17" font-weight="700" fill="#202124">56.98s</text>
+      </g>
+    </g>
+</svg>

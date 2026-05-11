@@ -1,0 +1,57 @@
+INFO 05-09 10:39:04 [main.py:66] Unspecified platform detected, switching to CPU Platform instead.
+INFO 05-09 10:39:04 [importing.py:44] Triton is installed but 0 active driver(s) found (expected 1). Disabling Triton to prevent runtime errors.
+INFO 05-09 10:39:04 [importing.py:68] Triton not installed or not compatible; certain GPU-related functions will not be available.
+INFO 05-09 10:39:06 [nixl_utils.py:20] Setting UCX_RCACHE_MAX_UNRELEASED to '1024' to avoid a rare memory leak in UCX when using NIXL.
+WARNING 05-09 10:39:06 [nixl_utils.py:34] NIXL is not available
+WARNING 05-09 10:39:06 [nixl_utils.py:44] NIXL agent config is not available
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x795bfdde2840>, trust_remote_code=True, seed=0, num_prompts=8, dataset_name='random', no_stream=False, dataset_path=None, no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, spec_bench_output_len=256, spec_bench_category=None, sonnet_input_len=550, sonnet_output_len=150, sonnet_prefix_len=200, sharegpt_output_len=None, blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=128, random_output_len=64, random_range_ratio='0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8080', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=1, model='DeepSeek-V4-Flash-native-Q4_K_M-batiai.gguf', input_len=None, output_len=None, tokenizer='/data/models/deepseek-ai/DeepSeek-V4-Flash', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=True, save_detailed=False, append_result=False, metadata=['backend_server=bati.cpp', 'model=DeepSeek-V4-Flash-native-Q4_K_M-batiai.gguf', 'split_mode=layer', 'server_np=1', 'ctx=16384', 'gpus=8xW7900D'], result_dir='/results', result_filename='random-i128-o64-n8-c1.json', ignore_eos=True, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='bench-0db875f8-', top_p=None, top_k=None, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name='DeepSeek-V4-Flash-native-Q4_K_M-batiai.gguf', lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False)
+INFO 05-09 10:39:06 [config.py:775] Detected quantization_config.scale_fmt=ue8m0; enabling UE8M0 for DeepGEMM.
+INFO 05-09 10:39:07 [utils.py:90] Sampling input_len from [128, 128] and output_len from [64, 64]
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 1
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     8         
+Failed requests:                         0         
+Maximum request concurrency:             1         
+Benchmark duration (s):                  80.46     
+Total input tokens:                      1024      
+Total generated tokens:                  512       
+Request throughput (req/s):              0.10      
+Output token throughput (tok/s):         6.36      
+Peak output token throughput (tok/s):    9.00      
+Peak concurrent requests:                2.00      
+Total token throughput (tok/s):          19.09     
+---------------Time to First Token----------------
+Mean TTFT (ms):                          2041.30   
+Median TTFT (ms):                        1870.79   
+P50 TTFT (ms):                           1870.79   
+P90 TTFT (ms):                           2318.63   
+P95 TTFT (ms):                           2827.81   
+P99 TTFT (ms):                           3235.16   
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          127.24    
+Median TPOT (ms):                        128.75    
+P50 TPOT (ms):                           128.75    
+P90 TPOT (ms):                           129.64    
+P95 TPOT (ms):                           129.74    
+P99 TPOT (ms):                           129.81    
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           125.25    
+Median ITL (ms):                         123.12    
+P50 ITL (ms):                            123.12    
+P90 ITL (ms):                            143.43    
+P95 ITL (ms):                            145.50    
+P99 ITL (ms):                            150.78    
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          10057.43  
+Median E2EL (ms):                        9975.79   
+P50 E2EL (ms):                           9975.79   
+P90 E2EL (ms):                           10382.04  
+P95 E2EL (ms):                           10755.76  
+P99 E2EL (ms):                           11054.74  
+==================================================
